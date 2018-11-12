@@ -1,7 +1,7 @@
 {
-  "name": "comercio",
+  "name": "core",
   "version": "1.0.0",
-  "description": "Comercio Backend",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,9 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "faker": "^4.1.0",
-    "superagent": "^4.0.0-beta.5"
+    "mongoose": "^5.3.11"
   }
 }
