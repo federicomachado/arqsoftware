@@ -4,41 +4,42 @@ const superagent = require("superagent");
 const config = require("./../config")
 
 exports.purchase_create = function (req,res){     
-    // Metodo para verificar el formato del request, TO DO
+    // @TODO: Metodo para verificar el formato del request
     if (true){
-        const selectedGateway = GatewayEntry.find({category: req.body.category});
-        if (selectedGateway){
-            consumer_purchase = new Purchase(req.body);
-            consumer_purchase = consumer_purchase.save(function (err){
-                if (err) {
-                   res.status(500).json({error: "There has been an error completing the purchase" });
-                } else{
-                    console.log("Purchase created");
-                    superagent.post(config.url).send({purchase:consumer_purchase, gateway_url : selectedGateway.url}).end(function(err,res){
-                        if (err){
-                            res.status(500).json({error : err});
+        GatewayEntry.findOne({category: req.body.product.category}, function(err,selectedGateway){            
+            if (selectedGateway){            
+                req.body.gateway_name = selectedGateway.name
+                consumer_purchase = new Purchase(req.body);                            
+                consumer_purchase.save(function (err,ok){
+                    if (err) {
+                        res.status(500).json({error: "There has been an error completing the purchase" });
+                     } 
+                });                                       
+                superagent.post(config.tepagoya_url+"/commerce/purchases").send({purchase:consumer_purchase}).end(function(err,resp){
+                    if (err){
+                        res.status(500).json({error : err});
                         }            
-                        else{
-                            res.status(200).json({ purchase_code : consumer_purchase._id});
-                            }
-                    });        
-                }
-            });
-            
-        }else{
-            res.status(400).json({error: "Gateway not found"});
-        }
+                    else{
+                        res.status(200).json({ purchase_status: "success",purchase_code : consumer_purchase._id});
+                        }
+                });                                                  
+            }else{
+                res.status(400).json({error: "Gateway not found for category "  + req.body.product.category});
+            }    
+        });
+        
     }else{
     res.status(400).json({error : "Invalid format"});    
     }
 }
 
-exports.gateway_create = function (req,res){    
-
-    // Método para verificar el formato del request, TO DO.
+exports.gateway_create = function (req,res){  
+    // @TODO: Metodo para verificar el formato del request     
     if (true){
-        var query = { "category" : req.body.category},
-        update = { url : req.body.url, category: req.body.category },
+        var query = { "category" : req.body.category};
+        console.log(req.body.category);
+        console.log(req.body.name);
+        update = { name : req.body.name, category: req.body.category },
         options = { upsert: true, new: true, setDefaultsOnInsert: true };
         GatewayEntry.findOneAndUpdate(query, update, options, function(error, result) {
             if (error) return;
@@ -47,9 +48,7 @@ exports.gateway_create = function (req,res){
     }
     else{
         return res.status(400).json({error: "Invalid format"});
-    }
-    
-    
+    }        
 }            
 
 
