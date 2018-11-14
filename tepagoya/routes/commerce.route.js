@@ -4,5 +4,4 @@ const commerce_controller = require('../controllers/commerce.controller');
 
 
 routerCommerce.post('/purchases', commerce_controller.purchase_create);
-routerCommerce.post('/gateways', commerce_controller.gateway_create);
 module.exports = routerCommerce;

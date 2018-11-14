@@ -1,17 +1,12 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var routes = require("./routes/routes.js");
-var mongoose = require("mongoose");
-
-const config = require('./config.json');
+const mongoose = require('mongoose');
+const commerce_routes = require("./routes/commerce.route");
+const security_routes = require("./routes/security.route");
+const config = require("./config.json");
 
 initDatabase();
-
-var app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/",routes);
-
+app = initApp();
 
 
 
@@ -24,4 +19,13 @@ function initDatabase()  {
     mongoose.Promise = global.Promise;
     let db = mongoose.connection;
     db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+}
+
+function initApp() {
+    var app = express();
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use("/commerce",commerce_routes);
+    app.use("/security",security_routes);
+    return app;    
 }
