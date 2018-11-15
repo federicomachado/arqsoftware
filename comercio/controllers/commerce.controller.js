@@ -1,4 +1,4 @@
-const Purchase = require('./../../core/models/purchase.model');
+const Purchase = require('../models/purchase.model');
 const GatewayEntry = require("../models/gatewayEntry.model");
 const superagent = require("superagent");
 const config = require("./../config")
@@ -9,18 +9,17 @@ exports.purchase_create = function (req,res){
         GatewayEntry.findOne({category: req.body.product.category}, function(err,selectedGateway){            
             if (selectedGateway){            
                 req.body.gateway_name = selectedGateway.name
-                consumer_purchase = new Purchase(req.body);                            
-                consumer_purchase.save(function (err,ok){
-                    if (err) {
-                        res.status(500).json({error: "There has been an error completing the purchase" });
-                     } 
-                });                                       
-                superagent.post(config.tepagoya_url+"/commerce/purchases").send({purchase:consumer_purchase}).end(function(err,resp){
+                credit_card_info = req.body.credit_card;
+                                                  
+                superagent.post(config.tepagoya_url+"/api/consume").send({provider : selectedGateway.name, operation: "purchase", params : credit_card_info }).end(function(err,resp){
                     if (err){
                         res.status(500).json({error : err});
                         }            
                     else{
-                        res.status(200).json({ purchase_status: "success",purchase_code : consumer_purchase._id});
+                        consumer_purchase = new Purchase(req.body);                                                                 
+                        consumer_purchase.transaction_code = resp.body.transaction_code;
+                        consumer_purchase.save();
+                        res.status(200).json({ purchase_status: "success",transaction_code : resp.body.transaction_code});
                         }
                 });                                                  
             }else{
@@ -29,7 +28,7 @@ exports.purchase_create = function (req,res){
         });
         
     }else{
-    res.status(400).json({error : "Invalid format"});    
+        res.status(400).json({error : "Invalid format"});    
     }
 }
 
@@ -37,8 +36,6 @@ exports.gateway_create = function (req,res){
     // @TODO: Metodo para verificar el formato del request     
     if (true){
         var query = { "category" : req.body.category};
-        console.log(req.body.category);
-        console.log(req.body.name);
         update = { name : req.body.name, category: req.body.category },
         options = { upsert: true, new: true, setDefaultsOnInsert: true };
         GatewayEntry.findOneAndUpdate(query, update, options, function(error, result) {

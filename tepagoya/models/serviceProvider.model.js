@@ -2,11 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let ServiceProviderSchema = new Schema({        
-    name : { type:String, required: true },
+    provider : { type:String, required: true },
     url : { type: String, required : true},
-    entry_type : { type: String, required: true},
-    communication_type : { type:String, required:true},
-    additional_data : { type:String, required:true}
+    type : { type: String, required: true},
+    operations : [{
+        name : { type: String, required: true},
+        params : [{ 
+            name : { type:String, required:true},
+            type : { type:String, required:true},
+            format : { type:String}
+        }]
+    }]    
 });
 
 module.exports = mongoose.model('ServiceProvider', ServiceProviderSchema);
