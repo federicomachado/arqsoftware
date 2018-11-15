@@ -1,6 +1,6 @@
 const express = require('express');
 const routerCommerce = express.Router();
-const commerce_controller = require('../controllers/commerce.controller');
+const commerce_controller = require('./controller');
 
 
 routerCommerce.post('/purchases', commerce_controller.purchase_create);

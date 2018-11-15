@@ -1,7 +1,7 @@
-const Purchase = require('../models/purchase.model');
-const GatewayEntry = require("../models/gatewayEntry.model");
+const Purchase = require('./models/purchase.model');
+const GatewayEntry = require("./models/gatewayEntry.model");
 const superagent = require("superagent");
-const config = require("./../config")
+const config = require("./config")
 
 exports.purchase_create = function (req,res){     
     // @TODO: Metodo para verificar el formato del request
