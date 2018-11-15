@@ -23,7 +23,8 @@ let PurchaseSchema = new Schema({
         name: { type: String, required: true},
         category: {type: String, required: true}
     },
-    transaction_code : { type: String }           
+    transaction_code : { type: String },
+    status : { type: String }
 });
 
 module.exports = mongoose.model('Purchase', PurchaseSchema);
