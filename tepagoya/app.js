@@ -1,8 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const commerce_routes = require("./routes/commerce.route");
-const security_routes = require("./routes/security.route");
+const routes = require("./routes");
 const config = require("./config.json");
 
 initDatabase();
@@ -25,7 +24,6 @@ function initApp() {
     var app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-    app.use("/commerce",commerce_routes);
-    app.use("/security",security_routes);
+    app.use("/api",routes);
     return app;    
 }

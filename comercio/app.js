@@ -1,6 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var routes = require("./routes/routes.js");
+var routes = require("./routes.js");
 var mongoose = require("mongoose");
 
 const config = require('./config.json');
