@@ -18,11 +18,11 @@ exports.purchase_create = function (req,res){
                     res.status(400).json({error: err.message});
                 }else{
                     GatewayEntry.findOne({category: req.body.product.category}, function(err,selectedGateway){            
-                        if (selectedGateway){            
-                            req.body.gateway_name = selectedGateway.name
-                            credit_card_info = req.body.credit_card;
+                        if (selectedGateway){                                        
+                            info = req.body.credit_card;
+                            info.transaction_date = req.body.transaction_date;
                             req.body.status = "Sent";               
-                            superagent.post(config.tepagoya_url+"/api/consume").send({provider : selectedGateway.name, operation: "purchase", params : credit_card_info }).end(function(err,resp){
+                            superagent.post(config.tepagoya_url).send({provider : selectedGateway.name, operation: "purchase", params : info}).end(function(err,resp){
                                 if (err){
                                     res.status(500).json({error : err});
                                     }            
@@ -30,7 +30,7 @@ exports.purchase_create = function (req,res){
                                     consumer_purchase.status = "Confirmed";
                                     consumer_purchase.transaction_code = resp.body.transaction_code;
                                     consumer_purchase.save();
-                                    res.status(200).json({ purchase_status: "success",transaction_code : resp.body.transaction_code});
+                                    res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transaction_code});
                                     }
                                 });                                                                                                                                    
                         }else{
