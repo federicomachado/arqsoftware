@@ -1,5 +1,0 @@
-{
-    "port" : "3001",
-    "tepagoya_url" : "localhost:3000/api/consume",
-    "mongo_url" : "mongodb://fmachado:secret1@ds159993.mlab.com:59993/commerce"
-}
