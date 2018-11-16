@@ -1,7 +1,0 @@
-{
-    "port" : "3000",
-    "admin_username" : "fmachado",
-    "admin_password" : "secret",
-    "mongo_url" : "mongodb://fmachado:secret1@ds159563.mlab.com:59563/tepagoya",
-    "default_date_format" : "DD-MM-YY HH:mm:ss"
-}
