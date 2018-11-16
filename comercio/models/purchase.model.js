@@ -17,13 +17,14 @@ let PurchaseSchema = new Schema({
         postal_code: { type: String, max: 100}
     },
     amount: { type: Number, required: true},
-    date: { type: Date, required:true},
+    transaction_date: { type: Date, required:true},
     product: {
         quantity: { type: Number, required: true},
         name: { type: String, required: true},
         category: {type: String, required: true}
     },
     transaction_code : { type: String },
+
     status : { type: String }
 });
 
