@@ -30,7 +30,7 @@ exports.purchase_create = function (req,res){
                                     consumer_purchase.status = "Confirmed";
                                     consumer_purchase.transaction_code = resp.body.transaction_code;
                                     consumer_purchase.save();
-                                    res.status(200).json({ purchase_status: "success",transaction_code : resp.body.transaction_code});
+                                    res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transaction_code});
                                     }
                                 });                                                                                                                                    
                         }else{

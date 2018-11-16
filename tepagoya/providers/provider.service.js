@@ -5,51 +5,40 @@ var app = require('express');
 var bodyParser = require('body-parser');
 
 
-exports.validateProvider = async function ( name, operation, params ) {
-    console.log("Entered checkProvider for provider " + name );    
+exports.validateRequest = async function ( name, operation, params ) {
     selectedProvider = await ServiceProvider.findOne({provider : name});
+    if (!selectedProvider){
+        return { message : "Provider " + name + " does not exist", valid: false};
+    }
     op = selectedProvider.operations.filter(function (o) {         
         return o.name == operation;
     });       
     if (op.length == 0 ){
-        return false;
+        return { message: "Provider " + name + " does not have " + operation +" operation registered", valid : false };
     }
-    op = op[0];
-    console.log(op.params);
-    console.log(" ");
-    console.log(params);
-    console.log(Object.keys(params));
-    console.log(" ");    
+    op = op[0];    
     keys = Object.keys(params);    
-    if (keys.length == op.params.length){
-        for (var i = 0; i < op.params.length; i++) {
-            var p = op.params[i].name;
-            if (!keys.includes(p)){
-                return false;   
-            }
-            if (op.params[i].type == "Date"){                                                            
-                var date = moment( params[op.params[i].name],config.default_date_format,true)                    
-                if (!date.isValid()){
-                    console.log("La fecha del campo " + op.params[i].name + " No es valida "); 
-                    //return false;   
-                }
-                console.log(date);
-                if (op.params[i].format){
-                    dateString = date.format(op.params[i].format);
-
-                    console.log("La fecha formateada del campo " + op.params[i].name +  " es: " + dateString);
-                }
-                
-
-            }
-            
+    if (keys.length != op.params.length){
+        return { message: "Request does not have same number of params as registered operation", valid : false };
+    }        
+    for (var i = 0; i < op.params.length; i++) {
+        var p = op.params[i].name;
+        if (!keys.includes(p)){
+            return {message: "Required parameter " + p + " does not exist in request ", valid : false};   
         }
-    }
-
-
-    console.log("Se encontró la operación " + op.name );
-
-    return selectedProvider    
+        if (op.params[i].type == "Date"){                                                            
+            var date = moment( params[op.params[i].name],config.default_date_format,true)                    
+            if (!date.isValid()){                    
+                return {message: "Date format of field " + op.params[i].name + " does not comply with TePagoYa default date format " + config.default_date_format, valid: false};                    
+            }                
+            if (op.params[i].format){
+                dateString = date.format(op.params[i].format);  
+                params[op.params[i].name] = dateString;                  
+            }                
+        }
+        
+    }        
+    return { url : selectedProvider.url, params : params, operation : operation, valid:true};
 };
 
 
