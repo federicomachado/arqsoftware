@@ -6,8 +6,6 @@ const config = require("./config.json");
 
 initDatabase();
 app = initApp();
-
-
 var server = app.listen(config.port, function () {
     console.log("app running on port.", server.address().port);
 });
