@@ -2,5 +2,4 @@
  "port":3002,
  "tepagoya_url" : "localhost:3000/api/consume",
  "mongo_url": "mongodb://fmachado:secret1@ds035907.mlab.com:35907/gateway_db"
-
 }
