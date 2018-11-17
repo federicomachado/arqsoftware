@@ -5,7 +5,7 @@ var app = require('express');
 var bodyParser = require('body-parser');
 
 
-exports.validateRequest = async function ( name, operation, params ) {
+exports.validateRequest = async function ( name, operation, params, made_by ) {
     selectedProvider = await ServiceProvider.findOne({provider : name});
     if (!selectedProvider){
         return { message : "Provider " + name + " does not exist", valid: false};
@@ -17,10 +17,7 @@ exports.validateRequest = async function ( name, operation, params ) {
         return { message: "Provider " + name + " does not have " + operation +" operation registered", valid : false };
     }
     op = op[0];    
-    keys = Object.keys(params);    
-    if (keys.length != op.params.length){
-        return { message: "Request does not have same number of params as registered operation", valid : false };
-    }        
+    keys = Object.keys(params);        
     for (var i = 0; i < op.params.length; i++) {
         var p = op.params[i].name;
         if (!keys.includes(p)){
@@ -38,7 +35,7 @@ exports.validateRequest = async function ( name, operation, params ) {
         }
         
     }        
-    return { url : selectedProvider.url, params : params, operation : operation, valid:true};
+    return { url : selectedProvider.url, params : params, operation : operation, made_by: made_by, valid:true};
 };
 
 
