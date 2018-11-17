@@ -1,8 +1,8 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const providerRoutes = require("./provider/serviceProvider.route");
-const consumerRoutes = require("./consumer/serviceConsumer.route");
+const providerRoutes = require("./serviceProvider/serviceProvider.route");
+const consumerRoutes = require("./serviceConsumer/serviceConsumer.route");
 const config = require("./config.json");
 
 initDatabase();

@@ -5,7 +5,7 @@ const GatewayService = require("./gateway.service");
 exports.purchase_verify = async function (req,res){
     console.log("Received request from TePagoYa");
     if (req.body.params.number && req.body.operation && req.body.params && req.body.made_by){
-         network = await GatewayService.getNetwork(req.body.number);        
+         network = await GatewayService.getNetwork(req.body.params.number);        
          if (network) {
             res.status(200).json({ provider: req.body.made_by, operation: req.body.operation, params: req.body.params});
          } else{

@@ -1,5 +1,5 @@
 
-const ProviderService = require("../provider/serviceProvider.service");
+const ProviderService = require("../serviceProvider/serviceProvider.service");
 const superagent = require("superagent");
 
 exports.consume = async function (req,res){       
@@ -13,9 +13,9 @@ exports.consume = async function (req,res){
                 console.log("Sending request to: " + operation_url);
                 let resp_1 = await superagent.post(operation_url).send({ operation : provider.operation, params : provider.params, made_by :  req.body.made_by}).catch(
                     err => { return  res.status(400).json({message : err}); }
-                )                
-                                   
-                if (resp_1.body.provider == req.body.made_by){                    
+                )                                                   
+                if (resp_1.body.provider == req.body.made_by){  
+                    console.log("Returning original petition ");                  
                     return res.status(200).json(resp_1.body);                                        
                 }else{
                     provider = await ProviderService.validateRequest(resp_1.body.provider, resp_1.body.operation, resp_1.body.params, resp_1.body.made_by);                                                                        
