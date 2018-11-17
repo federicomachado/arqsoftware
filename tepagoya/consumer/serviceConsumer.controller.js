@@ -1,9 +1,6 @@
 
 const ProviderService = require("../provider/serviceProvider.service");
 const superagent = require("superagent");
-const redis = require('redis');
-const REDIS_PORT = process.env.REDIS_PORT;
-const client = redis.createClient(REDIS_PORT);
 
 exports.consume = async function (req,res){       
     console.log("Request received successfully");     
@@ -11,17 +8,13 @@ exports.consume = async function (req,res){
     if (provider.valid){        
         console.log(provider);
         continue_flow = true; 
-        while (continue_flow){                            
-                console.log("Sending request to " + provider.url);
-                let resp_1 = await superagent.post(provider.url).send({ operation : provider.operation, params : provider.params, made_by :  req.body.made_by}).catch(
-                    err => { console.log(err);
-                        console.log("Ha ocurrido un error...");
-                    }
+        while (continue_flow){                                            
+                operation_url = provider.operation.url ? provider.url + "/" + provider.operation.url : provider.url;
+                console.log("Sending request to: " + operation_url);
+                let resp_1 = await superagent.post(operation_url).send({ operation : provider.operation, params : provider.params, made_by :  req.body.made_by}).catch(
+                    err => { return  res.status(400).json({message : err}); }
                 )                
-                err = false;
-                if (err){                        
-                        return status(400).json({message : resp_1.body.message});
-                }                                      
+                                   
                 if (resp_1.body.provider == req.body.made_by){                    
                     return res.status(200).json(resp_1.body);                                        
                 }else{
