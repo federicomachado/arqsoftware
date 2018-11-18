@@ -13,17 +13,29 @@ var server = app.listen(config.port, function () {
 });
 
 function initDatabase()  {
-    mongoose.connect(config.mongo_url, { useNewUrlParser:true});
-    mongoose.Promise = global.Promise;
-    let db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+    var stLogTitle = "initDatabase";
+    try{
+        mongoose.connect(config.mongo_url, { useNewUrlParser:true});
+        mongoose.Promise = global.Promise;
+        let db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+    }catch(error){
+        console.log(stLogTitle,error);
+    }
+ 
 }
 
 function initApp() {
-    var app = express();
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
-    creditCardCreationRoutes(app);
-    createTransaction(app);
-    return app;    
+    var stLogTitle = "initApp";
+    try{
+        var app = express();
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({ extended: true }));
+        creditCardCreationRoutes(app);
+        createTransaction(app);
+        return app;
+    }catch(error){
+        console.log(stLogTitle,error);
+    }   
 }
