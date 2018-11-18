@@ -2,10 +2,50 @@
 
 exports.getNetwork = async function ( number ){
     console.log("Received number is: " + number);
-    /* Visa: 4xxxxxx
-Mastercard: 5xxxxx
-Discover: 6011xx, 644xxx, 65xxxx
-American Express: 3xxxx, 37xxxx
-Diner's Club and Carte Blanche: 300xxx-305xxx, 36xxxx, 38xxxx */
-    return "123";
+    var hash = {
+        "3" : {
+            "" : "Amex",
+            "6" : { "" : "Diners"},        
+            "7" : { "" : "Amex" },
+            "8" : { "" : "Diners"},
+            "0" : {
+                "0" : {
+                    "0" : { "" : "Diners"},
+                    "1" : { "" : "Diners"},
+                    "2" : { "" : "Diners"},
+                    "3" : { "" : "Diners"},
+                    "4" : { "" : "Diners"},
+                    "5" : { "" : "Diners"},
+                }
+            }
+        },
+        "4" : { "" : "Visa" },
+        "5" : { "" :  "Mastercard" },
+        "6" : {
+             "0" : {
+                "1" : {
+                    "1" : { "" : "Discover"}
+                }
+             },
+             "4" : {
+                "4" : { "" : "Discover" }
+             },
+             "5" : { "" : "Discover"}
+        }
+    };
+
+    var contador = 0;
+    var found = false;
+    while ( !found ) {
+        hash = hash[number[contador]]
+        if (!hash) {
+            return "";
+        }
+        else{
+            if (hash[number[contador+1]] == undefined) {
+                return hash[""];
+            }    
+        }   
+        contador+=1; 
+    }    
 }
