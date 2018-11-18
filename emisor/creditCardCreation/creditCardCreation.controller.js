@@ -1,9 +1,9 @@
 
-const creditCardLogic = require('../creditCardCreation/creditCardCreation.businessLogic');
+const Service = require('./creditCardCreation.service');
 
  function createCreditCard(body){
      
-    return creditCardLogic.createCreditCard(creditCard);
+    return Service.createCreditCard(body);
  }
 
  module.exports = {createCreditCard};

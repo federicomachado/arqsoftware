@@ -12,17 +12,12 @@ let CreditCardSchema = new EmisorSchema({
     blockedState: {
         isBlocked: { type: Boolean, required: true},
         reason: { type: String, max: 100}
-    },
-    denouncedState:{
-        denounced: { type: Boolean, required: true},
-        reason: { type: String, max: 100}
-    },
+    },  
     transactions: [{ 
+        idTransaction: mongoose.Schema.Types.ObjectId,
         date : { type: Date, required: true},
-        detail : { type:String, required:true, max: 100},
-        amount : { type: Number, required: true},
-        idTransaction: { type: Number, required: true},
-        status: { type: String, required: true, enum: ['Pending', 'Complete','Error']},
+        amount : { type: Number, required: true},   
+        status: { type: String, required: true, enum: ['Pending', 'Complete','Error','Canceled','Chargeback']},
         origin: { type: String, required: true, max: 100}
     }]
 });
