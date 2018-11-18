@@ -2,8 +2,9 @@ const superagent = require("superagent");
 const config = require("./../config.json");
 const ThresholdService = require("./threshold.service");
 
-exports.set_treshold = async function (req,res){    
-    if (req.body.limit){
+exports.set_treshold = async function (req,res){   
+             
+    if (req.body.limit && ThresholdService.verifyIP(req.connection.remoteAddress)){
         var response = await ThresholdService.setTreshold(req.body.limit);
         return res.status(response.status).json({"message" : response.message});
     }

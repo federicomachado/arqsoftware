@@ -1,6 +1,10 @@
 const Threshold = require("./threshold.model");
+const config = require("../config.json");
 
-
+exports.verifyIP = async function ( ip ) {
+    // Habria que ver como hacemos estas cosas con Proxy y demás.
+    return config.threshold_whitelist.includes(ip);
+}
 
 
 exports.setTreshold = async function ( limit ){         
