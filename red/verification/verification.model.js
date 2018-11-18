@@ -7,12 +7,7 @@ let TransactionSchema = new Schema({
     date: { type:Date, required:true}    
 });
 
-let TresholdSchema = new Schema({
-    reference : { type: String, required: true},
-    limit: {type: Number, required: true},    
-    date: { type:Date, required:true}    
-});
 
 module.exports = mongoose.model('Transaction', TransactionSchema);
-module.exports = mongoose.model('Treshold', TresholdSchema);
+
 
