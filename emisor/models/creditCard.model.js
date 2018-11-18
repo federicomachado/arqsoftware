@@ -5,14 +5,14 @@ let CreditCardSchema = new EmisorSchema({
     id: mongoose.Schema.Types.ObjectId,
     customerName: {type: String, required: true, max: 100},
     number: {type: String, required: true, max: 100},
-    expires: { type: Date, required: true},
+    expires: { type: Date,required: true},
     security_code: { type: String, required: true, max: 100}, 
     currentAmount: { type: Number, required: true},
     limitAmount: { type: Number, required: true},
     blockedState: {
         isBlocked: { type: Boolean, required: true},
         reason: { type: String, max: 100}
-    },  
+    },
     transactions: [{ 
         idTransaction: mongoose.Schema.Types.ObjectId,
         date : { type: Date, required: true},

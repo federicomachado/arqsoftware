@@ -1,8 +1,9 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const creditCardCreationRoutes = require("./creditCardCreation/creditCardCreation.route");
+const creditCardCreationRoutes = require("./createCreditCard/createCreditCard.route");
 const chargebackRoutes = require("./chargeback/chargeback.route");
+const createTransaction = require("./createTransaction/createTransaction.route");
 const config = require("./config.json");
 
 initDatabase();
@@ -23,5 +24,6 @@ function initApp() {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     creditCardCreationRoutes(app);
+    createTransaction(app);
     return app;    
 }
