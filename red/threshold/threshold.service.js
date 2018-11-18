@@ -1,14 +1,7 @@
-const Treshold = require("./verification.model");
+const Treshold = require("./threshold.model");
 
 
 
-exports.validatePurchase = function(){
-
-}
-
-exports.isFraud = function( number ){
-
-}
 
 exports.setTreshold = function ( limit ){
     console.log(limit);    

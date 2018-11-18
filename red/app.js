@@ -1,7 +1,8 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const routes = require("./verification/verification.route");
+const verificationRoutes = require("./verification/verification.route");
+const thresholdRoutes = require("./threshold/threshold.route");
 const config = require("./config.json");
 
 
@@ -23,6 +24,7 @@ function initApp() {
     var app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
-    app.use("/",routes);
+    app.use("/",verificationRoutes);
+    app.use("/",thresholdRoutes);
     return app;    
 }
