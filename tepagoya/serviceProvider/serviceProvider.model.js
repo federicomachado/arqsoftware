@@ -6,13 +6,14 @@ let ServiceProviderSchema = new Schema({
     provider : { type:String, required: true },
     url : { type: String, required : true},
     type : { type: String, required: true},
-    operations : [{
+    operations : [{        
         name : { type: String, required: true},
         params : [{ 
             name : { type:String, required:true},
             type : { type:String, required:true},
             format : { type:String}
-        }]
+        }],
+        url : { type: String, default:""}
     }]    
 });
 

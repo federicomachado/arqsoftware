@@ -21,8 +21,8 @@ exports.purchase_create = function (req,res){
                         if (selectedGateway){                                        
                             info = req.body.credit_card;
                             info.transaction_date = req.body.transaction_date;
-                            req.body.status = "Sent";               
-                            superagent.post(config.tepagoya_url).send({provider : selectedGateway.name, operation: "purchase", params : info}).end(function(err,resp){
+                            req.body.status = "Sent";                                           
+                            superagent.post(config.tepagoya_url).send({provider : selectedGateway.name, operation: "purchase", params : info, made_by : config.provider_name }).end(function(err,resp){
                                 if (err){
                                     res.status(500).json({error : err});
                                     }            
