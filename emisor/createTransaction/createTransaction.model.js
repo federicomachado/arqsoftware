@@ -3,7 +3,7 @@ const CreditCard = require('../models/creditCard.model');
 exports.findCreditCard  = async function findCreditCard(atransaction){
     var stLogTitle = "findCreditCard - Model";
     try{
-        var trans =  await CreditCard.findOne({'number': atransaction.creditCard.number});   
+        var trans =  await CreditCard.findOne({'number': atransaction.number});   
         return trans;
 
     }catch(error){
@@ -22,9 +22,11 @@ exports.createTransaction = async function createTransaction(aCreditCard){
             objRes.error = true;
             return objRes;
         }                        
-    });      
-    return objRes;       
-       
+    });
+
+    var indexArrNewTran = objRes.transactions.length;
+    objRes.transactionID = objRes.transactions[indexArrNewTran - 1].id; 
+    return objRes;     
 
     }catch(error){
         console.log(stLogTitle,error);
