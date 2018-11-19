@@ -6,4 +6,5 @@ let ThresholdSchema = new Schema({
     limit: {type: Number, required: true},    
     date: { type:Date, required:true}    
 });
+
 module.exports = mongoose.model('Threshold', ThresholdSchema);

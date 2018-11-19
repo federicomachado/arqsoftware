@@ -2,5 +2,23 @@
     "port":3003,
     "tepagoya_url" : "localhost:3000/api/consume",
     "mongo_url": "mongodb://fmachado:secret1@ds161039.mlab.com:61039/network_db",
-    "threshold_whitelist" : [ "::1" ]
+    "threshold_whitelist" : [ "::1" ],
+    "emisores_hash" :  {
+                            "49" : { "16" : {
+                                             "70" : { "" : "Oca"  }
+                                            }
+                                    },
+                            "45" : { "13" : { 
+                                             "67" : { "" : "Brou" }                                            
+                                            },
+                                     "51" : {
+                                             "10" : { "": "Itau" }
+                                            }
+                                    },
+                            "44" : { "81" : {
+                                          "62" : { "" : "Santander" }
+                                            }
+                                    }
+                                                            
+                        }
 }
