@@ -8,19 +8,23 @@ exports.consume = async function (req,res){
     if (provider.valid){                
         continue_flow = true; 
         while (continue_flow){                                            
-                operation_url = provider.operation.url ? provider.url + "/" + provider.operation.url : provider.url;
-                console.log("Sending request to: " + operation_url);                
+                operation_url = provider.operation_url ? provider.url + "/" + provider.operation_url : provider.url;                
+                console.log("Sending request to: " + operation_url);  
+                console.log(provider.params);                     
                 let resp_1 = await superagent.post(operation_url).send({ operation : provider.operation, params : provider.params, made_by :  req.body.made_by}).catch(
-                    err => { return  res.status(400).json({message : err}); }
-                )                                                   
-                if (resp_1.body.provider == req.body.made_by){  
-                    console.log("Returning original petition ");                  
-                    return res.status(200).json(resp_1.body);                                        
-                }else{
-                    provider = await ProviderService.validateRequest(resp_1.body.provider, resp_1.body.operation, resp_1.body.params, resp_1.body.made_by);                                                                        
+                    err => { }
+                );                
+                if (resp_1 && resp_1.body){                    
+                    provider_name = resp_1.body.provider;
+                    if (resp_1.body.provider == req.body.made_by){                          
+                        return res.status(200).json(resp_1.body);                                        
+                    }else{
+                        provider = await ProviderService.validateRequest(resp_1.body.provider, resp_1.body.operation, resp_1.body.params, resp_1.body.made_by);   
+                        continue_flow = provider.valid;                                                                                                                    
+                    }
+                } else{                  
+                    return  res.status(400).json({message : "Got an empty response from provider " + operation_url});
                 }
         }                        
-    }else{
-        res.status(400).json({message: provider.message});
     }
 }
