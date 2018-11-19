@@ -18,9 +18,9 @@ async function createTransaction(bodyAnswer){
             if(bodyAnswer.creditCard.expires == undefined){
                 return MESSAGE_TO_SEND["ENTER_EXPIRED_DATE"];
             }
+                        
             var dateToValidate = moment(bodyAnswer.creditCard.expires,"YYYY-MM-DD").toDate();
-            var expireDate = moment(creditCardFound.expires,"YYYY-MM-DD").toDate();         
-
+            var expireDate = moment(creditCardFound.expires,"YYYY-MM-DD").toDate();                     
             if(!(dateToValidate.getTime() == expireDate.getTime()) ){           
                 return MESSAGE_TO_SEND["INCORRECT_EXPIRED_DATE"];
             }           
@@ -54,13 +54,11 @@ async function createTransaction(bodyAnswer){
                 return MESSAGE_TO_SEND["CREDIT_CARD_EXCEED_LIMIT"]; 
             }
             //Save transaction
-            var newTransaction = bodyAnswer.transaction;
-            console.log("newTransaction",newTransaction);
+            var newTransaction = bodyAnswer.transaction;            
             newTransaction.date = todayDate;
             newTransaction.status = "Complete";
             creditCardFound.transactions.push(newTransaction);
-            var respModel = await TransactionModel.createTransaction(creditCardFound);   
-            console.log("respModel",respModel);
+            var respModel = await TransactionModel.createTransaction(creditCardFound);               
             if(respModel.error){
                 MESSAGE_TO_SEND["DATABASE_ERROR"].errorDetail = respModel.errorDetail;        
                 return MESSAGE_TO_SEND["DATABASE_ERROR"];
