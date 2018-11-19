@@ -28,8 +28,7 @@ exports.createTransaction = async function createTransaction(aCreditCard){
                 
         });
         console.log("objRes 2222222",objRes);
-        return objRes;  
-     
+        return objRes;       
        
 
     }catch(error){
