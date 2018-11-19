@@ -24,18 +24,25 @@ exports.validateRequest = async function ( name, operation, params, made_by ) {
             return {message: "Required parameter " + p + " does not exist in request ", valid : false};   
         }
         if (op.params[i].type == "Date"){                                                            
-            var date = moment( params[op.params[i].name],config.default_date_format,true)                    
-            if (!date.isValid()){                    
+            var date = moment( params[op.params[i].name],config.default_date_format,true);    
+            var destinationDate = moment( params[op.params[i].name],op.params[i].format,true);              
+            if ( !date.isValid() && !destinationDate.isValid()){                    
                 return {message: "Date format of field " + op.params[i].name + " does not comply with TePagoYa default date format " + config.default_date_format, valid: false};                    
             }                
             if (op.params[i].format){
-                dateString = date.format(op.params[i].format);  
+                if (!destinationDate.isValid() && date.isValid()){
+                    dateString = date.format(op.params[i].format);  
+                } else{
+                    if (destinationDate.isValid() && !date.isValid()){
+                        dateString = destinationDate.format(op.params[i].format);  
+                    }
+                }
                 params[op.params[i].name] = dateString;                  
             }                
         }
         
-    }        
-    return { url : selectedProvider.url, params : params, operation : operation, made_by: made_by, valid:true};
+    }            
+    return { url : selectedProvider.url, operation_url : op.url, params : params, operation : operation, made_by: made_by, valid:true};
 };
 
 

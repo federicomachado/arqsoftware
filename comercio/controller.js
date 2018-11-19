@@ -4,7 +4,7 @@ const GatewayEntry = require("./models/gatewayEntry.model");
 const superagent = require("superagent");
 const config = require("./config")
 
-exports.purchase_create = function (req,res){     
+exports.purchase_create = function (req,res){      
     // @TODO: Metodo para verificar el formato del request, verificar tarjeta de credito
     consumer_purchase = new Purchase(req.body);
     consumer_purchase.status = "Pending";
@@ -20,6 +20,9 @@ exports.purchase_create = function (req,res){
                     GatewayEntry.findOne({category: req.body.product.category}, function(err,selectedGateway){            
                         if (selectedGateway){                                        
                             info = req.body.credit_card;
+                            info.transaction_amount = req.body.amount;
+                            info.transaction_origin = config.provider_name;
+                            info.transaction_detail = req.body.product.name;
                             info.transaction_date = req.body.transaction_date;
                             req.body.status = "Sent";                                           
                             superagent.post(config.tepagoya_url).send({provider : selectedGateway.name, operation: "purchase", params : info, made_by : config.provider_name }).end(function(err,resp){
