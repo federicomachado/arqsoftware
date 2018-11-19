@@ -1,5 +1,4 @@
 const superagent = require("superagent");
-const config = require("./config");
 const GatewayService = require("./gateway.service");
 
 exports.purchase_verify = async function (req,res){    
