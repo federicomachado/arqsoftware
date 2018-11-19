@@ -15,24 +15,20 @@ exports.findCreditCard  = async function findCreditCard(atransaction){
 exports.createTransaction = async function createTransaction(aCreditCard){
     var stLogTitle = "createTransaction - Model";
     try{
-        var objRes = {};
-        objRes.error = false;
-        console.log("aCreditCard",aCreditCard);
-        var objRes = await aCreditCard.save(err => {      
-            if (err) {
-                objRes.error = true;
-                objRes.errorDetail = err; 
-                console.log("err 4444444444444444444444444",err);                 
-            }  
-            console.log("objRes 333333",objRes);
-                
-        });
-        console.log("objRes 2222222",objRes);
-        return objRes;       
+                            
+    let objRes ={};
+    objRes = await aCreditCard.save().catch( err => {        
+        if (err){                            
+            objRes.error = true;
+            return objRes;
+        }                        
+    });      
+    return objRes;       
        
 
     }catch(error){
         console.log(stLogTitle,error);
     }
+
 }
 
