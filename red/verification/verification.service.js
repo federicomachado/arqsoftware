@@ -2,12 +2,13 @@ const crypto = require("crypto");
 const Transaction = require('./verification.model');
 const Threshold = require('../threshold/threshold.model');
 const  config = require("../config.json");
+const messages = require("../messages.json");
 
 exports.validatePurchase = async function( req ){
     var number = await crypto.createHash("sha256",req.body.params.number).digest("base64");        
     var fraud = await this.isFraud(number);
     if (fraud){
-        return {status:400, message : "Credit card transactions are greater than limit "};   
+        return {status:400, message : messages.VERIFICATION.LIMIT_REACHED};   
     } else{
         var emisor = await this.getEmisor(req.body.params.number);
         if (emisor) {
@@ -16,7 +17,7 @@ exports.validatePurchase = async function( req ){
             return { status:200, provider: emisor, operation: req.body.operation, params: req.body.params};            
         } 
         else{
-            return {status:500, message : "Emisor not found for credit card"};   
+            return {status:500, message : messages.VERIFICATION.ISSUER_NOT_FOUND};   
         }        
     }
 }
