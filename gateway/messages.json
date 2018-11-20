@@ -1,0 +1,7 @@
+{
+    "VERIFICATION" : {
+        "NETWORK_NOT_FOUND" : "No network found for credit card number",
+        "INCOMPLETE_REQUEST" : "Incomplete request"
+    }
+
+}

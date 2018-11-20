@@ -1,7 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const routes = require("./gateway.routes");
+const routes = require("./verification/verification.routes");
 const config = require("./config.json");
 
 
