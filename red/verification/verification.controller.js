@@ -1,7 +1,7 @@
 const superagent = require("superagent");
 const config = require("./../config.json");
 const VerificationService = require("./verification.service");
-const messages = require("./..messages.json");
+const messages = require("./../messages.json");
 
 exports.card_verify = async function (req,res){ 
    if (req.body.params.number){

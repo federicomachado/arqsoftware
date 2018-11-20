@@ -1,12 +1,14 @@
 const TransactionModel = require('./createTransaction.model');
-const MESSAGE_TO_SEND = require('../messageManagement');
 const messages = require("../messages.json");
+const config = require("../config.json");
 var luhn = require("luhn");
 
 var moment = require("moment");
 async function createTransaction(bodyAnswer){
     var stLogTitle = "createTransaction - Service";
+    body = bodyAnswer
     try{
+        bodyAnswer = bodyAnswer.params;
         if(!luhn.validate(bodyAnswer.number)){
             return {message: messages.DONOT_MET_LUNH_ALGORITHM, codeMessage:"DONOT_MET_LUNH_ALGORITHM",error:true}; 
         }    
@@ -19,8 +21,8 @@ async function createTransaction(bodyAnswer){
             if(bodyAnswer.expires == undefined){
                 return {message: messages.ENTER_EXPIRED_DATE, codeMessage:"ENTER_EXPIRED_DATE" ,error:true}                                
             }                        
-            var dateToValidate = moment(bodyAnswer.expires,"YYYY-MM-DD").toDate();
-            var expireDate = moment(creditCardFound.expires,"YYYY-MM-DD").toDate();                     
+            var dateToValidate = moment(bodyAnswer.expires,config.default_expires_format).toDate();
+            var expireDate = moment(creditCardFound.expires,config.default_expires_format).toDate();                    
             if(!(dateToValidate.getTime() == expireDate.getTime()) ){           
                 return {message: messages.INCORRECT_EXPIRED_DATE, codeMessage:"INCORRECT_EXPIRED_DATE" ,error:true}                                                
             }           
@@ -66,7 +68,7 @@ async function createTransaction(bodyAnswer){
             if(respModel.error){
                 return {message: messages.DATABASE_ERROR, codeMessage:"DATABASE_ERROR" ,error:true, errorDetail : respModel.errorDetail}                                                                                                                                                
             }else{                  
-                return {message: messages.TRANSACTION_CREATED, codeMessage:"TRANSACTION_CREATED" ,error:false, transactionID : respModel.transactionID}                                                                                                                                                                
+                return {message: messages.TRANSACTION_CREATED, codeMessage:"TRANSACTION_CREATED" ,error:false, transactionID : respModel.transactionID, made_by : body.made_by, provider : body.made_by }                                                                                                                                                                
             }
         }else{
             return {message: messages.CREDITCARD_DONOT_BELONG_EMISOR, codeMessage:"CREDITCARD_DONOT_BELONG_EMISOR" ,error:true} 

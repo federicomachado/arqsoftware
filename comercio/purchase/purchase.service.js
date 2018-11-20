@@ -34,7 +34,7 @@ exports.purchase_create = async function(req,res){
                                     consumer_purchase.status = "Confirmed";
                                     consumer_purchase.transaction_code = resp.body.transaction_code;
                                     consumer_purchase.save();
-                                    return res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transaction_code});
+                                    return res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transactionID});
                                     }
                                 });                                                                                                                                    
                         }else{
