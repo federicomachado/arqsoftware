@@ -1,0 +1,19 @@
+{
+    "EXPIRED_CARD" : "Credit card is Expired",
+    "INSUFFICIENT_AMOUNT" : "Balance available is not enough to cover transaction amount",
+    "CREDITCARD_BLOCKED" : "Credit card is Blocked",
+    "DATABASE_ERROR" : "There has been an error saving to database",
+    "TRANSACTION_CREATED" : "Transaction created successfully",
+    "DONOT_MET_LUNH_ALGORITHM" : "Credit card number does not comply with Lunh's algorithm",
+    "INVALID_CREDIT_CARD_INFO" : "Credit card information is not correct",
+    "ORIGIN_NEEDED" : "You must specify the origin of the transaction",
+    "DETAIL_NEEDED" : "You must specify a detail for the transaction",
+    "ENTER_EXPIRED_DATE" : "Expire date field is mandatory",
+    "CONEXION_ERROR" : "Connection error",
+    "INCORRECT_EXPIRED_DATE" : "Expire date is incorrect",
+    "INCORRECT_SECURITY_CODE" : "Security code is incorrect",
+    "INCORRECT_AMOUNT" : "Amount must be greater than 0",
+    "CREDIT_CARD_DENOUNCED" : "Credit card has been denounced",
+    "CREDIT_CARD_EXCEED_LIMIT" : "Balance exceeds credit card limit",
+    "CREDITCARD_DONOT_BELONG_EMISOR" : "Credit card not issued by issuer"
+}
