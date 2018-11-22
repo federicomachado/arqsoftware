@@ -1,41 +1,44 @@
 const TransactionModel = require('./createTransaction.model');
-const MESSAGE_TO_SEND = require('../messageManagement');
+const messages = require("../messages.json");
+const config = require("../config.json");
 var luhn = require("luhn");
 
 var moment = require("moment");
 async function createTransaction(bodyAnswer){
     var stLogTitle = "createTransaction - Service";
+    body = bodyAnswer
     try{
+        bodyAnswer = bodyAnswer.params;
         if(!luhn.validate(bodyAnswer.number)){
-            return MESSAGE_TO_SEND["DONOT_MET_LUNH_ALGORITHM"]; 
+            return {message: messages.DONOT_MET_LUNH_ALGORITHM, codeMessage:"DONOT_MET_LUNH_ALGORITHM",error:true}; 
         }    
         var creditCardFound = await TransactionModel.findCreditCard(bodyAnswer);
         if(creditCardFound != null && creditCardFound!= "" && Object.keys(creditCardFound).length != 0){
             var securityCode = creditCardFound.security_code;
             if(parseInt(securityCode) != parseInt(bodyAnswer.security_code)){
-                return MESSAGE_TO_SEND["INCORRECT_SECURITY_CODE"];
+                return {message: messages.INCORRECT_SECURITY_CODE, codeMessage:"INCORRECT_SECURITY_CODE" ,error:true}                
             }
             if(bodyAnswer.expires == undefined){
-                return MESSAGE_TO_SEND["ENTER_EXPIRED_DATE"];
+                return {message: messages.ENTER_EXPIRED_DATE, codeMessage:"ENTER_EXPIRED_DATE" ,error:true}                                
             }                        
-            var dateToValidate = moment(bodyAnswer.expires,"YYYY-MM-DD").toDate();
-            var expireDate = moment(creditCardFound.expires,"YYYY-MM-DD").toDate();                     
+            var dateToValidate = moment(bodyAnswer.expires,config.default_expires_format).toDate();
+            var expireDate = moment(creditCardFound.expires,config.default_expires_format).toDate();                    
             if(!(dateToValidate.getTime() == expireDate.getTime()) ){           
-                return MESSAGE_TO_SEND["INCORRECT_EXPIRED_DATE"];
+                return {message: messages.INCORRECT_EXPIRED_DATE, codeMessage:"INCORRECT_EXPIRED_DATE" ,error:true}                                                
             }           
             var todayDate = new Date(); 
             todayDate =  moment(todayDate,"YYYY-MM-DD").toDate();
             if(todayDate.getTime() > expireDate.getTime()){
-                return MESSAGE_TO_SEND["EXPIRED_CARD"];          
+                return {message: messages.EXPIRED_CARD, codeMessage:"EXPIRED_CARD" ,error:true}                                                  
             }        
             if(bodyAnswer.transaction_amount == null || parseFloat(bodyAnswer.transaction_amount) <= 0){
-                return MESSAGE_TO_SEND["INCORRECT_AMOUNT"];
+                return {message: messages.INCORRECT_AMOUNT, codeMessage:"INCORRECT_AMOUNT" ,error:true}                                                
             }
             if(bodyAnswer.transaction_origin == null || bodyAnswer.transaction_origin == "" || bodyAnswer.transaction_origin == undefined){
-                return MESSAGE_TO_SEND["ORIGIN_NEEDED"];
+                return {message: messages.ORIGIN_NEEDED, codeMessage:"ORIGIN_NEEDED" ,error:true}                                                                
             }        
             if(bodyAnswer.transaction_detail == null || bodyAnswer.transaction_detail== "" || bodyAnswer.transaction_detail == undefined){
-                return MESSAGE_TO_SEND["DETAIL_NEEDED"];
+                return {message: messages.DETAIL_NEEDED, codeMessage:"DETAIL_NEEDED" ,error:true}                                                                                
             }
             /*
             if(parseFloat(creditCardFound.currentAmount) < parseFloat(bodyAnswer.transaction.amount)){  
@@ -43,14 +46,14 @@ async function createTransaction(bodyAnswer){
             }
             */
             if(creditCardFound.blockedState.isBlocked){
-                return MESSAGE_TO_SEND["CREDITCARD_BLOCKED"]; 
+                return {message: messages.CREDITCARD_BLOCKED, codeMessage:"CREDITCARD_BLOCKED" ,error:true}                                                                                              
             }
             if(creditCardFound.denouncedState.isDenounced){
-                return MESSAGE_TO_SEND["CREDIT_CARD_DENOUNCED"]; 
+                return {message: messages.CREDIT_CARD_DENOUNCED, codeMessage:"CREDIT_CARD_DENOUNCED" ,error:true}                                                                                                
             }
             var newAmount = parseFloat(creditCardFound.currentAmount) + parseFloat(bodyAnswer.transaction_amount);
             if(parseFloat(newAmount) > parseFloat(creditCardFound.limitAmount)){
-                return MESSAGE_TO_SEND["CREDIT_CARD_EXCEED_LIMIT"]; 
+                return {message: messages.CREDIT_CARD_EXCEED_LIMIT, codeMessage:"CREDIT_CARD_EXCEED_LIMIT" ,error:true}                                                                                                                
             }
             //Save transaction
             var newTransaction = {}; 
@@ -63,19 +66,16 @@ async function createTransaction(bodyAnswer){
             creditCardFound.transactions.push(newTransaction);
             var respModel = await TransactionModel.createTransaction(creditCardFound);               
             if(respModel.error){
-                MESSAGE_TO_SEND["DATABASE_ERROR"].errorDetail = respModel.errorDetail;        
-                return MESSAGE_TO_SEND["DATABASE_ERROR"];
-            }else{  
-                MESSAGE_TO_SEND["TRANSACTION_CREATED"].transactionID = respModel.transactionID;           
-                return MESSAGE_TO_SEND["TRANSACTION_CREATED"];
+                return {message: messages.DATABASE_ERROR, codeMessage:"DATABASE_ERROR" ,error:true, errorDetail : respModel.errorDetail}                                                                                                                                                
+            }else{                  
+                return {message: messages.TRANSACTION_CREATED, codeMessage:"TRANSACTION_CREATED" ,error:false, transactionID : respModel.transactionID, made_by : body.made_by, provider : body.made_by }                                                                                                                                                                
             }
         }else{
-            return MESSAGE_TO_SEND["CREDITCARD_DONOT_BELONG_EMISOR"];
+            return {message: messages.CREDITCARD_DONOT_BELONG_EMISOR, codeMessage:"CREDITCARD_DONOT_BELONG_EMISOR" ,error:true} 
         }
     }catch(error){
-        console.log(stLogTitle,error);
-        MESSAGE_TO_SEND["CONEXION_ERROR"].errorDetail = error;   
-        return MESSAGE_TO_SEND["CONEXION_ERROR"];
+        console.log(stLogTitle,error);        
+        return {message: messages.CONEXION_ERROR, codeMessage:"CONEXION_ERROR" ,error:true, errorDetail : error}                                                                                                                                                        
     }
 }
 module.exports = {createTransaction}; 

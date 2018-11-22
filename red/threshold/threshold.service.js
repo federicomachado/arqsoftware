@@ -1,5 +1,6 @@
 const Threshold = require("./threshold.model");
 const config = require("../config.json");
+const messages = require("../messages.json");
 
 exports.verifyIP = async function ( ip ) {
     // Habria que ver como hacemos estas cosas con Proxy y demás.
@@ -13,8 +14,8 @@ exports.setTreshold = async function ( limit ){
     options = { upsert: true, new: true, setDefaultsOnInsert: true };
     var threshold = await Threshold.findOneAndUpdate(query, update, options, function(error, result) {
         if (error){
-            return {status:500, message : "There has been an error setting limit to " + limit};   
+            return {status:500, message : messages.THRESHOLD.SAVING_ERROR + limit};   
         }        
     });  
-    return {status: 200, message: "Limit changed to " + limit};  
+    return {status: 200, message: messages.THRESHOLD.LIMIT_SUCCESS + limit};  
 }

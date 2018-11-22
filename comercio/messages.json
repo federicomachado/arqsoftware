@@ -1,0 +1,9 @@
+{
+    "GATEWAY" : {
+        "CREATE_SUCCESS" : "Gateway created successfully",
+        "INVALID_FORMAT" : "Invalid format"
+    },
+    "PURCHASE" : {
+        "GATEWAY_NOT_FOUND" : "Gateway not found for category "
+    }
+}

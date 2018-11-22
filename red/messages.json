@@ -1,0 +1,12 @@
+{
+    "THRESHOLD" : {
+        "LIMIT_NOT_FOUND" : "Limit parameter not found",
+        "SAVING_ERROR" : "There has been an error setting limit to ",
+        "LIMIT_SUCCESS" : "Limit changed to "
+    },
+    "VERIFICATION" : {
+        "MISSING_NUMBER" : "Missing number field",
+        "LIMIT_REACHED" : "Credit card transactions are greater than limit",
+        "ISSUER_NOT_FOUND" : "Issuer not found for credit card"
+    }
+}

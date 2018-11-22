@@ -1,4 +1,4 @@
-const Config = require("./config.json")
+const Config = require("../config.json")
 
 exports.getNetwork = async function ( number ){    
     var hash = Config.networks_hash;    
