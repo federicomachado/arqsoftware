@@ -24,7 +24,7 @@ exports.consume = async function (req,res){
                     }else{
                         provider = await ProviderService.validateRequest(resp_1.body.provider, resp_1.body.operation, resp_1.body.params, resp_1.body.made_by);                                                                           
                         if (!provider.valid){
-                            Log.log(provider.message, { original_provider: resp_1.body.provider, original_operation: resp_1.body.operation, original_operation : resp_1.body.params, made_by : resp_1.made_by});
+                            Log.log(provider.message, { original_provider: resp_1.body.provider, original_operation: resp_1.body.operation, original_params : resp_1.body.params, made_by : resp_1.made_by});
                             return  res.status(400).json({message : provider.message});
                         }
                         continue_flow = provider.valid;
@@ -40,7 +40,7 @@ exports.consume = async function (req,res){
                 }
         }                        
     } else{
-        Log.log(provider.message, { original_provider: req.body.provider, original_operation: req.body.operation, original_operation : req.body.params, made_by :req.body.made_by});
+        Log.log(provider.message, { original_provider: req.body.provider, original_operation: req.body.operation, original_params : req.body.params, made_by :req.body.made_by});
         return  res.status(400).json({message : provider.message});
     }
 }
