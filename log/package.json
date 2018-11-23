@@ -1,0 +1,11 @@
+{
+  "name": "@lazerth/log",
+  "version": "0.0.3",
+  "description": "Log package for Software Architecture course @ORT",
+  "main": "index.js",
+  "author": "fmachado",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.3.13"
+  }
+}

@@ -1,6 +1,8 @@
 
 const ProviderService = require("../serviceProvider/serviceProvider.service");
 const superagent = require("superagent");
+const config = require("../config.json");
+const Log = require("../logs/"+config.log_service+".service");
 
 exports.consume = async function (req,res){       
     console.log("Request received successfully");     

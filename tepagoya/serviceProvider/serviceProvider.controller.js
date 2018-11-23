@@ -1,4 +1,6 @@
 const ServiceProvider = require("./serviceProvider.model");
+const config = require("../config.json");
+const Log = require("../logs/"+config.log_service+".service");
 
 exports.register_provider = function (req,res){
     serviceProvider = new ServiceProvider(req.body);
@@ -6,6 +8,7 @@ exports.register_provider = function (req,res){
         if (err){
             res.status(400).json({error : err.message});
         }else{
+            Log.log("aaa","bbb","ccc");
             res.status(200).json({ message : "Provider registered successfully"});   
         }
     });
