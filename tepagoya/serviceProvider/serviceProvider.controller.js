@@ -12,5 +12,4 @@ exports.register_provider = function (req,res){
             res.status(200).json({ message : "Provider registered successfully"});   
         }
     });
-
 }

@@ -9,11 +9,11 @@ exports.initDatabase = function(database, databaseNameC){
     mongoose.Promise = global.Promise;    
 }
 
-exports.create_entry = function(ts, msg, cod){
+exports.create_entry = function(ts, msg, rd){
     let entry = new Entry({
         timestamp: ts,
         message: msg,
-        code : cod
+        raw_data : rd
     })
     entry.save();
 }

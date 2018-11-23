@@ -7,5 +7,5 @@
     "log_dependency" : "@lazerth/log",
     "log_database" : "mongodb://fmachado:secret1@ds115154.mlab.com:15154/tepagoya_logs",
     "log_database_name" : "tepagoya_logs",
-    "log_service" : "defaultLog"
+    "log_service" : "epochLog"
 }
