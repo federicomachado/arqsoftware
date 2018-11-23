@@ -3,5 +3,11 @@
     "admin_username" : "fmachado",
     "admin_password" : "secret",
     "mongo_url" : "mongodb://fmachado:secret1@ds159563.mlab.com:59563/tepagoya",
-    "default_date_format" : "DD-MM-YY HH:mm:ss"
+    "default_date_format" : "DD-MM-YY HH:mm:ss",
+    "log_dependency" : "@lazerth/log",
+    "log_database" : "mongodb://fmachado:secret1@ds115154.mlab.com:15154/tepagoya_logs",
+    "log_database_name" : "tepagoya_logs",
+    "log_service" : "epochLog"
 }
+
+

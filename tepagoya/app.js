@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const providerRoutes = require("./serviceProvider/serviceProvider.route");
 const consumerRoutes = require("./serviceConsumer/serviceConsumer.route");
 const config = require("./config.json");
+const Log = require("./logs/"+config.log_service+".service");
 
 initDatabase();
 app = initApp();
@@ -19,9 +20,11 @@ function initDatabase()  {
     mongoose.Promise = global.Promise;
     let db = mongoose.connection;
     db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+    Log.initDatabase(config.log_database,config.log_database_name);
 }
 
 function initApp() {
+    
     var app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
