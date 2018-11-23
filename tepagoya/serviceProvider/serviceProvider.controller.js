@@ -6,9 +6,9 @@ exports.register_provider = function (req,res){
     serviceProvider = new ServiceProvider(req.body);
     serviceProvider.save(function(err,ok){
         if (err){
+            Log.log(err.message,req.body);
             res.status(400).json({error : err.message});
-        }else{
-            Log.log("aaa","bbb","ccc");
+        }else{            
             res.status(200).json({ message : "Provider registered successfully"});   
         }
     });

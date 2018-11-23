@@ -27,8 +27,10 @@ exports.consume = async function (req,res){
                     }
                 } else{                         
                     if (return_message && return_message.response && return_message.response.body && return_message.response.body.message){
+                        Log.log(return_message.response.body.message  + ", From url " + operation_url, { original_provider : req.body.provider, original_operation : req.body.operation, made_by : req.body.made_by }  );
                         return  res.status(400).json({message : return_message.response.body.message  + ", From url "  + operation_url});
                     }else{
+                        Log.log("Received empty response from url" + operation_url, { original_provider : req.body.provider, original_operation : req.body.operation, made_by : req.body.made_by }  );
                         return  res.status(400).json({message : "Received empty response from url" + operation_url});
                     }
                 }
