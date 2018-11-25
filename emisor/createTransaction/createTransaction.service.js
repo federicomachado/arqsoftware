@@ -30,14 +30,14 @@ async function createTransaction(ccToValidate) {
             newTransaction.detail = ccToValidate.transaction_detail;
             newTransaction.date = await getTodayDate();
             newTransaction.status = "Complete";
-            newTransaction.creditCardAcNumber = accNumHash;
+            newTransaction.creditCardAcNumber = accNumHash;            
            // creditCardFound.currentAmount = newAmount;          
 
-            var respModel = await TransactionModel.createTransaction(newTransaction);
+            var respModel = await TransactionModel.createTransaction(newTransaction);            
             if (respModel.error) {
                 return { message: messages.DATABASE_ERROR, codeMessage: "DATABASE_ERROR", error: true, errorDetail: respModel.errorDetail }
             } else {
-                return { message: messages.TRANSACTION_CREATED, codeMessage: "TRANSACTION_CREATED", error: false, transactionID: respModel.transactionID, made_by: body.made_by, provider: body.made_by }
+                return { message: messages.TRANSACTION_CREATED, codeMessage: "TRANSACTION_CREATED", error: false, transactionID: respModel._id, made_by: body.made_by, provider: body.made_by }
             }
 
         } else {
