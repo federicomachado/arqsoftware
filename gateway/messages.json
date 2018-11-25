@@ -1,7 +1,8 @@
 {
     "VERIFICATION" : {
         "NETWORK_NOT_FOUND" : "No network found for credit card number",
-        "INCOMPLETE_REQUEST" : "Incomplete request"
+        "INCOMPLETE_REQUEST" : "Incomplete request",
+        "INVALID_KEY" : "Invalid Key Received"
     }
 
 }

@@ -14,7 +14,8 @@ exports.consume = async function (req,res){
                 operation_url = provider.operation_url ? provider.url + "/" + provider.operation_url : provider.url;                
                 console.log("Sending request to: " + operation_url);  
                 console.log(provider.params);                     
-                let resp_1 = await superagent.post(operation_url).send({ operation : provider.operation, params : provider.params, made_by :  req.body.made_by}).catch(
+                let authorization = provider.key
+                let resp_1 = await superagent.post(operation_url).send({ operation : provider.operation, params : provider.params, made_by :  req.body.made_by}).set("authorization",authorization).catch(
                     err => { return_message = err }
                 );                
                 if (resp_1 && resp_1.body){                    

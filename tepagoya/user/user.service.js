@@ -43,8 +43,6 @@ exports.verify_token = async function (token){
     var user = await User.findOne({token : token});        
     if (user){        
         if (user.token_expires > moment()){
-            user.token_expires = moment().add(5,"minutes");
-            user.save();
             return ({ valid: true, message: messages.USER.LOGIN_SUCCESS});
         }else{
             return ({ valid: false, message: messages.USER.LOGIN_TOKEN_EXPIRED, status:401});

@@ -6,6 +6,7 @@ let ServiceProviderSchema = new Schema({
     provider : { type:String, required: true },
     url : { type: String, required : true},
     type : { type: String, required: true},
+    key : {  type: String, required : true},
     operations : [{        
         name : { type: String, required: true},
         params : [{ 
