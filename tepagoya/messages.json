@@ -1,0 +1,8 @@
+{
+    "USER" : {
+        "CREATE_SUCESS" : "User created successfully",
+        "NO_AUTH_DATA" : "Not auth data in body" ,
+        "MISSING_FIELDS" : "username, password and email fields are required in user_data",
+        "BAD_AUTH_DATA" : "Invalid credentials. This try has been logged"
+    }
+}

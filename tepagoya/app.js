@@ -3,6 +3,8 @@ var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const providerRoutes = require("./serviceProvider/serviceProvider.route");
 const consumerRoutes = require("./serviceConsumer/serviceConsumer.route");
+const userRoutes = require("./user/user.route");
+
 const config = require("./config.json");
 const Log = require("./logs/"+config.log_service+".service");
 
@@ -23,12 +25,12 @@ function initDatabase()  {
     Log.initDatabase(config.log_database,config.log_database_name);
 }
 
-function initApp() {
-    
+function initApp() {    
     var app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use("/api",providerRoutes);
-    app.use("/api",consumerRoutes);    
+    app.use("/api",consumerRoutes);
+    app.use("/api/user",userRoutes);    
     return app;    
 }
