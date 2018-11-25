@@ -4,16 +4,16 @@ const messages = require("../messages.json");
 const bcrypt = require('bcrypt');
 
 
-exports.create_user = async function ( req ){            
+exports.create_user = async function ( res, data ){            
     var query = { "username" : data.username };
     let password_hashed = bcrypt.hashSync(data.password, 10);
     var user =  {
-        username : req.username,
+        username : data.username,
         password : password_hashed,
-        email : req.email    
+        email : data.email    
     }
     options = { upsert: true, new: true, setDefaultsOnInsert: true };    
-    User.findOneAndUpdate(query, update, options, function(error, result) {
+    User.findOneAndUpdate(query, user, options, function(error, result) {
         if (error) return res.status(400).json({message: error});
         return res.status(200).json({message: messages.USER.CREATE_SUCCESS});
     });    
