@@ -18,11 +18,11 @@ var server = app.listen(config.port, function () {
 });
 
 function initDatabase()  {
+    Log.initDatabase(config.mongo_url,config.mongo_name);
     mongoose.connect(config.mongo_url, { useNewUrlParser:true});
     mongoose.Promise = global.Promise;
     let db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-    Log.initDatabase(config.log_database,config.log_database_name);
+    db.on('error', console.error.bind(console, 'MongoDB connection error:'));   
 }
 
 function initApp() {    

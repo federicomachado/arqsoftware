@@ -23,3 +23,20 @@ exports.user_signup = async function (req,res){
     }
 
 }
+
+exports.user_login = async function (req,res){    
+    if (req.body.username && req.body.password){                
+        let verify = await UserService.verify_password(req.body.username,req.body.password);
+        if (verify.valid){
+            let token = await UserService.generate_token(verify.user);
+            return res.status(200).json({ token : token, message : messages.USER.LOGIN_SUCCESS});
+        }else{
+            Log.log(messages.USER.BAD_LOGIN,req.body);
+            return res.status(400).json({error : messages.USER.BAD_LOGIN});
+        }
+    } else{
+        Log.log(messages.USER.NO_LOGIN_DATA,req.body);
+        return res.status(400).json({error : messages.USER.NO_LOGIN_DATA});
+    }
+
+}
