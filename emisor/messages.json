@@ -15,5 +15,8 @@
     "INCORRECT_AMOUNT" : "Amount must be greater than 0",
     "CREDIT_CARD_DENOUNCED" : "Credit card has been denounced",
     "CREDIT_CARD_EXCEED_LIMIT" : "Balance exceeds credit card limit",
-    "CREDITCARD_DONOT_BELONG_EMISOR" : "Credit card not issued by issuer"
+    "CREDITCARD_DONOT_BELONG_EMISOR" : "Credit card not issued by issuer",
+    "AUTH" : {
+        "INVALID_KEY" : "Invalid Key"
+    }
 }
