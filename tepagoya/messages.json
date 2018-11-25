@@ -6,6 +6,10 @@
         "BAD_AUTH_DATA" : "Invalid credentials. This try has been logged",
         "NO_LOGIN_DATA" : "Login needs username and password field",
         "BAD_LOGIN" : "Username or password incorrect",
-        "LOGIN_SUCCESS" : "Login successful"
+        "LOGIN_SUCCESS" : "Login successful",
+        "LOGIN_NO_USER" : "User does not exist",
+        "LOGIN_NO_TOKEN" : "No token supplied",
+        "LOGIN_INVALID_TOKEN" : "Invalid token",
+        "LOGIN_TOKEN_EXPIRED" : "Token expired"
     }
 }

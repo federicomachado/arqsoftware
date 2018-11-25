@@ -34,8 +34,24 @@ exports.verify_admin = async function (username, password){
 exports.generate_token = async function (user){    
     var token = await crypto.randomBytes(64).toString('hex');
     user.token = token;
-    user.token_expires = moment().add(30,"minutes");
-    user.save();
-    console.log(token);
+    user.token_expires = moment().add(5,"minutes");
+    user.save();    
     return token;     
+}
+
+exports.verify_token = async function (token){
+    var user = await User.findOne({token : token});        
+    if (user){        
+        if (user.token_expires > moment()){
+            user.token_expires = moment().add(5,"minutes");
+            user.save();
+            return ({ valid: true, message: messages.USER.LOGIN_SUCCESS});
+        }else{
+            return ({ valid: false, message: messages.USER.LOGIN_TOKEN_EXPIRED, status:401});
+        }
+        
+    } else{
+        return ({ valid:false, message: messages.USER.LOGIN_INVALID_TOKEN, status:400});
+    }
+    
 }
