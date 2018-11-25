@@ -13,7 +13,7 @@ exports.consume = async function (req,res){
                 return_message = undefined;                                    
                 operation_url = provider.operation_url ? provider.url + "/" + provider.operation_url : provider.url;                
                 console.log("Sending request to: " + operation_url);  
-                console.log(provider.params);                     
+                console.log(provider);                     
                 let resp_1 = await superagent.post(operation_url).send({ operation : provider.operation, params : provider.params, made_by :  req.body.made_by}).catch(
                     err => { return_message = err }
                 );                
