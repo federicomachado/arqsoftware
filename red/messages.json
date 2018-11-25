@@ -8,5 +8,8 @@
         "MISSING_NUMBER" : "Missing number field",
         "LIMIT_REACHED" : "Credit card transactions are greater than limit",
         "ISSUER_NOT_FOUND" : "Issuer not found for credit card"
+    },
+    "AUTH" : {
+        "INVALID_KEY" : "Invalid Key"
     }
 }
