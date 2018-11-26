@@ -34,6 +34,7 @@ function initApp() {
         app.use(bodyParser.urlencoded({ extended: true }));
         creditCardCreationRoutes(app);
         createTransaction(app);
+        chargebackRoutes(app);
         return app;
     }catch(error){
         console.log(stLogTitle,error);

@@ -1,27 +1,25 @@
 const TransactionModel = require('./createTransaction.model');
-
-const Bin = require('../models/bin.model');
-const CreditCard = require('../models/creditCard.model');
-
 const messages = require("../messages.json");
 const config = require("../config.json");
 var luhn = require("luhn");
 const crypto = require("crypto");
-
 var moment = require("moment");
+
 async function createTransaction(ccToValidate) {
     var stLogTitle = "createTransaction - Service";
     try {
         body = ccToValidate;
         ccToValidate = ccToValidate.params;
-        console.log("ccToValidate.number: "+ccToValidate.number);
         var accNumHash = await getAccountNumPlusDigitHash(ccToValidate.number);     
         var creditCardFound = await TransactionModel.findCreditCard(accNumHash);       
         if (creditCardFound.error) {
-            return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true, errorDetail: error };
+            return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
         }
         if (creditCardFound.cc != null && creditCardFound.cc != "" && Object.keys(creditCardFound.cc).length != 0) {
-           var newAmount = await checkCreditCard(ccToValidate, creditCardFound);
+            var res = await checkCreditCard(ccToValidate, creditCardFound);            
+            if(res.error){
+                return res;
+            }            
             var todayDate = new Date();
             todayDate = moment(todayDate, config.default_expires_format).toDate();
             var newTransaction = {};
@@ -30,13 +28,16 @@ async function createTransaction(ccToValidate) {
             newTransaction.detail = ccToValidate.transaction_detail;
             newTransaction.date = await getTodayDate();
             newTransaction.status = "Complete";
-            newTransaction.creditCardAcNumber = accNumHash;            
-           // creditCardFound.currentAmount = newAmount;          
-
+            newTransaction.creditCardAcNumber = accNumHash;          
+            creditCardFound.cc.currentAmount = res;
             var respModel = await TransactionModel.createTransaction(newTransaction);            
             if (respModel.error) {
                 return { message: messages.DATABASE_ERROR, codeMessage: "DATABASE_ERROR", error: true, errorDetail: respModel.errorDetail }
             } else {
+                var respCCUpdated = await TransactionModel.updateCC(creditCardFound.cc);    
+                if(respCCUpdated.error){                  
+                    return { message: messages.DATABASE_ERROR, codeMessage: "DATABASE_ERROR", error: true, errorDetail: respCCUpdated.errorDetail }
+                }
                 return { message: messages.TRANSACTION_CREATED, codeMessage: "TRANSACTION_CREATED", error: false, transactionID: respModel._id, made_by: body.made_by, provider: body.made_by }
             }
 
@@ -52,17 +53,23 @@ async function createTransaction(ccToValidate) {
 async function checkCreditCard(ccToValidate, creditCardFound) {
     var stLogTitle = "validateCreditCard";
     try {
-        var numerCC = ccToValidate.number;
-        /*  
-        if(!luhn.validate(numerCC)){
-            console.log("enter luhn");
+        var numerCC = ccToValidate.number;         
+        if(!luhn.validate(numerCC)){          
             return {message: messages.DONOT_MET_LUNH_ALGORITHM, codeMessage:"DONOT_MET_LUNH_ALGORITHM",error:true}; 
-        } 
-        */
+        }
+        if(ccToValidate.name.toUpperCase() != creditCardFound.cc.customerName.toUpperCase()){
+            return { message: messages.INCORRECT_CUTOMER_NAME, codeMessage: "INCORRECT_CUTOMER_NAME", error: true};            
+        }        
+        if(creditCardFound.cc.status == "Blocked"){
+            return { message: messages.CREDITCARD_BLOCKED, codeMessage: "CREDITCARD_BLOCKED", error: true };            
+        }
+        if(creditCardFound.cc.status == "Denounced"){
+            return { message: messages.CREDIT_CARD_DENOUNCED, codeMessage: "CREDIT_CARD_DENOUNCED", error: true };
+        }
         var binHahs = await getBinNumberHash(numerCC);
         var binFound = await TransactionModel.findBin(creditCardFound.cc.binNumber);
         if (binFound.error) {
-            return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true, errorDetail: error };
+            return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
         }
         if (binFound.bin.binNumber != binHahs) {
             return { message: messages.CREDITCARD_DONOT_BELONG_EMISOR, codeMessage: "CREDITCARD_DONOT_BELONG_EMISOR", error: true }
@@ -73,7 +80,7 @@ async function checkCreditCard(ccToValidate, creditCardFound) {
         var dateToValidate = moment(ccToValidate.expires, config.default_expires_format).toDate();
         var expireDate = moment(creditCardFound.cc.expires, config.default_expires_format).toDate();
         var todayDate = await getTodayDate();
-        if (todayDate.getTime() < expireDate.getTime()) {
+        if (todayDate.getTime() > expireDate.getTime()) {
             return { message: messages.EXPIRED_CARD, codeMessage: "EXPIRED_CARD", error: true }
         }
         if (!(dateToValidate.getTime() == expireDate.getTime())) {
@@ -95,10 +102,8 @@ async function checkCreditCard(ccToValidate, creditCardFound) {
         var secCodeCalculated = await getSecurityCode(numerCC, ccToValidate.expires);
         if (secCodeCalculated != ccToValidate.security_code) {
             return { message: messages.INCORRECT_SECURITY_CODE, codeMessage: "INCORRECT_SECURITY_CODE", error: true }
-        }
-
-        return newAmount;
-       
+        }   
+        return newAmount;       
 
     } catch (error) {
         console.log(stLogTitle, error);
@@ -106,7 +111,6 @@ async function checkCreditCard(ccToValidate, creditCardFound) {
     }
 
 }
-
 async function getTodayDate() {
     var stLogTitle = "getTodayDate";
     try {
@@ -116,7 +120,6 @@ async function getTodayDate() {
         console.log(stLogTitle, error);
     }
 }
-
 async function getBinNumberHash(numCC) {
     var stLogTitle = "getBinNumberHash";
     try {
@@ -127,7 +130,6 @@ async function getBinNumberHash(numCC) {
         console.log(stLogTitle, error);
     }
 }
-
 async function getAccountNumPlusDigitHash(numCC) {
     var stLogTitle = "getAccountNumPlusDigitHash";
     try {
@@ -139,7 +141,6 @@ async function getAccountNumPlusDigitHash(numCC) {
     }
 
 }
-
 async function getSecurityCode(number, expireDate) {
     var stLogTitle = "getSecurityCode";
     try {
@@ -167,4 +168,5 @@ function formatnumber(number) {
     format = format.substring(format.length - 3, format.length);
     return format;
 }
+
 module.exports = { createTransaction }; 

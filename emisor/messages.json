@@ -16,6 +16,11 @@
     "CREDIT_CARD_DENOUNCED" : "Credit card has been denounced",
     "CREDIT_CARD_EXCEED_LIMIT" : "Balance exceeds credit card limit",
     "CREDITCARD_DONOT_BELONG_EMISOR" : "Credit card not issued by issuer",
+    "INCORRECT_CUTOMER_NAME" : "Incorrect Customer name",
+    "TRANSACTION_WITH_CHARGEBACK" : "Transaction with a charegback done.",
+    "CHARGEBACK_FIXED": "The chargeback reported was fixed.",
+    "TRANSACTION_ID_REQUIRED": "A transaction id is required",
+    "TRANSACTION_NOT_FOUND": "The transaction does not exist in the system.",
     "AUTH" : {
         "INVALID_KEY" : "Invalid Key"
     }
