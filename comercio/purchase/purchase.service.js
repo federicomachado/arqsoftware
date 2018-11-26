@@ -5,8 +5,7 @@ const config = require("../config")
 const superagent = require("superagent");
 const messages = require("../messages");
 
-exports.purchase_create = async function(req,res){
-
+exports.purchase_create = async function(req,res){    
     consumer_purchase = new Purchase(req.body);
     consumer_purchase.status = "Pending";
     consumer_purchase.validate(function(err,ok){
@@ -25,8 +24,9 @@ exports.purchase_create = async function(req,res){
                             info.transaction_origin = config.provider_name;
                             info.transaction_detail = req.body.product.name;
                             info.transaction_date = req.body.transaction_date;
-                            req.body.status = "Sent";                                           
-                            superagent.post(config.tepagoya_url).send({provider : selectedGateway.name, operation: "purchase", params : info, made_by : config.provider_name }).end(function(err,resp){
+                            req.body.status = "Sent";                                                                       
+                            var authorization = res.getHeaders()["authorization"];
+                            superagent.post(config.tepagoya_url).send({provider : selectedGateway.name, operation: "purchase", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
                                 if (err){
                                     return res.status(500).json({error : err});
                                     }            

@@ -5,5 +5,8 @@
     },
     "PURCHASE" : {
         "GATEWAY_NOT_FOUND" : "Gateway not found for category "
+    },
+    "AUTH" :{
+        "INVALID_KEY" : "Invalid Key"
     }
 }
