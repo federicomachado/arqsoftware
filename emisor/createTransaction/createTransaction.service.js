@@ -5,13 +5,13 @@ var luhn = require("luhn");
 const crypto = require("crypto");
 var moment = require("moment");
 
-async function createTransaction(ccToValidate) {
+async function createTransaction(ccToValidate) {    
     var stLogTitle = "createTransaction - Service";
     try {
         body = ccToValidate;
-        ccToValidate = ccToValidate.params;
+        ccToValidate = ccToValidate.params;        
         var accNumHash = await getAccountNumPlusDigitHash(ccToValidate.number);     
-        var creditCardFound = await TransactionModel.findCreditCard(accNumHash);       
+        var creditCardFound = await TransactionModel.findCreditCard(accNumHash);    
         if (creditCardFound.error) {
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
         }
@@ -30,6 +30,7 @@ async function createTransaction(ccToValidate) {
             newTransaction.status = "Complete";
             newTransaction.creditCardAcNumber = accNumHash;          
             creditCardFound.cc.currentAmount = res;
+            
             var respModel = await TransactionModel.createTransaction(newTransaction);            
             if (respModel.error) {
                 return { message: messages.DATABASE_ERROR, codeMessage: "DATABASE_ERROR", error: true, errorDetail: respModel.errorDetail }
@@ -42,6 +43,7 @@ async function createTransaction(ccToValidate) {
             }
 
         } else {
+            console.log("ENTRO AL PRIMER ELSE");
             return { message: messages.CREDITCARD_DONOT_BELONG_EMISOR, codeMessage: "CREDITCARD_DONOT_BELONG_EMISOR", error: true }
         }
     } catch (error) {
@@ -71,9 +73,7 @@ async function checkCreditCard(ccToValidate, creditCardFound) {
         if (binFound.error) {
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
         }
-        if (binFound.bin.binNumber != binHahs) {
-            return { message: messages.CREDITCARD_DONOT_BELONG_EMISOR, codeMessage: "CREDITCARD_DONOT_BELONG_EMISOR", error: true }
-        }
+        
         if (ccToValidate.expires == undefined) {
             return { message: messages.ENTER_EXPIRED_DATE, codeMessage: "ENTER_EXPIRED_DATE", error: true }
         }

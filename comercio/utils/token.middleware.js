@@ -3,6 +3,7 @@ const router = express.Router();
 const superagent = require("superagent");
 const config = require("../config.json");
 const messages = require("../messages.json");
+const bcrypt = require("bcrypt");
 
 exports.auth = async function (req,res,next){    
     await superagent.post(config.login_url).send({ username : config.provider_name, password: config.provider_password}).end(function(err,resp){
@@ -20,8 +21,8 @@ exports.auth = async function (req,res,next){
     });            
 }
 
-exports.key = async function (req,res,next){
-    if (req.headers.authorization && req.headers.authorization == config.tepagoya_key){
+exports.key = async function (req,res,next){        
+    if (req.headers.authorization && bcrypt.compareSync(config.tepagoya_key,req.headers.authorization)){
         next()
     } else{
         res.status(400).json({error :messages.AUTH.INVALID_KEY})            

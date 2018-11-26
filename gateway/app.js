@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const routes = require("./verification/verification.routes");
 const config = require("./config.json");
 
-
 initDatabase();
 app = initApp();
 
@@ -12,7 +11,7 @@ var server = app.listen(config.port, function () {
     console.log("app running on port.", server.address().port);
 });
 
-function initDatabase()  {
+function initDatabase()  {        
     mongoose.connect(config.mongo_url, { useNewUrlParser:true});
     mongoose.Promise = global.Promise;
     let db = mongoose.connection;
