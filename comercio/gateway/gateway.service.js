@@ -1,5 +1,5 @@
 const config = require("../config")
-const messages = require("../messages");
+const messages = require("../utils/messages.json");
 const GatewayEntry = require("./gateway.model");
 
 exports.gateway_create = async function (res, name, category){

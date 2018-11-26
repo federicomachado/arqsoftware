@@ -3,7 +3,7 @@ const CreditCard = require('../models/creditCard.model');
 const GatewayEntry = require("../gateway/gateway.model");
 const config = require("../config")
 const superagent = require("superagent");
-const messages = require("../messages");
+const messages = require("../utils/messages.json");
 
 exports.purchase_create = async function(req,res){    
     consumer_purchase = new Purchase(req.body);
@@ -32,7 +32,7 @@ exports.purchase_create = async function(req,res){
                                     }            
                                 else{                                
                                     consumer_purchase.status = "Confirmed";
-                                    consumer_purchase.transaction_code = resp.body.transaction_code;
+                                    consumer_purchase.transaction_code = resp.body.transactionID;
                                     consumer_purchase.save();
                                     return res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transactionID});
                                     }

@@ -19,25 +19,22 @@ exports.findPurchase  = async function findPurchase(transactionID){
     }   
 };
 
-exports.updatePurchase  = async function updatePurchase(aPurchase){
+exports.updatePurchase  = async function updatePurchase(aPurchase,transactionId){
     var stLogTitle = "updatePurchase - Model";
     try{
         let objRes ={};
-        var newPurch = {};
-        newPurch.amountReturned = parseFloat(aPurchase.amount);     
-        newPurch.dateReturned = aPurchase.date;
-        newPurch.status = aPurchase.status;         
-        var newPurchase = new Purchase(newPurch);
-        objRes = await newPurchase.save().catch( err => {        
-            if (err){                           
+        var query = {'transaction_code': transactionId};       
+        var updatedTrans = await Purchase.findOneAndUpdate(query, {"$set":{"status": aPurchase.status, "amountReturned":aPurchase.amountReturned,"dateReturned":aPurchase.dateReturned}}, {upsert:false}, function(err, doc){
+            if (err) {
                 objRes.error = true;
                 objRes.errorDetail = err;
                 return objRes;
-            }                        
+            }     
         });
-        return objRes;   
+        return updatedTrans;
     }catch(error){
         console.log(stLogTitle,error);
     }
    
 };
+

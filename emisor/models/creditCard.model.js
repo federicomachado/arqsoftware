@@ -11,6 +11,7 @@ let creditCardSchema = new Schema ({
     expires: { type: String,required: true},
     currentAmount: { type: Number, required: true},
     limitAmount: { type: Number, required: true},
-    status: {type: String, required: true, enum: ['Blocked', 'Denounced','Active']} 
+    status: {type: String, required: true, enum: ['Blocked', 'Denounced','Active']},
+    maxDevolutionDays: { type: Number, required: true}
 });
 module.exports = mongoose.model('Creditcard', creditCardSchema);

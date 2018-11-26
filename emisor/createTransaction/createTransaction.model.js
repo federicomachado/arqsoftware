@@ -4,8 +4,7 @@ const Transaction = require('../models/transaction.model');
 
 exports.findCreditCard  = async function findCreditCard(accNumHash){
     var stLogTitle = "findCreditCard - Model";
-    try{
-  
+    try{  
         let objRes ={};  
         var cc = await CreditCard.findOne({'accountNumberPlusDigit': accNumHash}).catch( err => {        
             if (err){                            
@@ -65,8 +64,7 @@ exports.findBin  = async function findBin(ccard){
 
 exports.createTransaction = async function createTransaction(aTransaction){
     var stLogTitle = "createTransaction - Model";
-    try{
-                                
+    try{                                
         let objRes ={};
         var newTransaction = new Transaction(aTransaction);
         objRes = await newTransaction.save().catch( err => {        
