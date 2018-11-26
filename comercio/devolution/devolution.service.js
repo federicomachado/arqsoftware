@@ -5,7 +5,7 @@ var moment = require("moment");
 const superagent = require("superagent");
 const ReusableFunctions = require("../utils/reusableFunctions.js");
 
-async function createDevolution (transactionIDBody) {
+async function createDevolution (transactionIDBody,res) {
     var stLogTitle = "createDevolution - Service";
     try {          
         if(transactionIDBody.transactionId == undefined){
@@ -18,7 +18,32 @@ async function createDevolution (transactionIDBody) {
         }      
         if(purchaseFound.status == "Returned"){
             return { message: messages.PURCHASE_ALREADY_RETURNED, codeMessage: "PURCHASE_ALREADY_RETURNED", error: true};
-        }     
+        }
+
+        var info = {
+            transactionId: transactionId,
+            message: messages.DEVOLUTION_DONE
+        }       
+
+  
+       // console.log(" resresresresresres resresresresresresres: "+JSON.stringify(res)); 
+         
+        var authorization = res.getHeaders()["authorization"];
+
+      
+
+       await superagent.post(config.tepagoya_url).send({provider:purchaseFound.emisor, operation: "devolution", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
+            if (err){
+                console.log("err emisor:"+err );
+                //return resp.status(500).json({error : err});
+            }  
+            console.log("respuesta del emisor: "+JSON.stringify(resp));
+         
+        });     
+
+
+
+        /*
         purchaseFound.status = "Returned";
         purchaseFound.amountRetuned = purchaseFound.amount; 
         purchaseFound.dateReturned = await ReusableFunctions.getTodayDate();        
@@ -26,19 +51,9 @@ async function createDevolution (transactionIDBody) {
         if(purchaseUpdated.error){
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};        
         }     
-        var info = {
-            transactionId: transactionId,
-            message: messages.DEVOLUTION_DONE
-        } 
-        /*       
-        superagent.post(config.tepagoya_url).send({provider : transactionFound.origin, operation: "chargeback", params : info, made_by : config.provider_name }).end(function(err,resp){
-            if (err){
-                console.log("err emisor:"+err );
-                //return resp.status(500).json({error : err});
-            }  
-         
-        });  
         */
+   
+        
         return { message: messages.DEVOLUTION_DONE, codeMessage: "DEVOLUTION_DONE", error: false};
 
     } catch(error){

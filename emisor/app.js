@@ -1,9 +1,12 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-const mongoose = require('mongoose');
+
 const creditCardCreationRoutes = require("./createCreditCard/createCreditCard.route");
 const chargebackRoutes = require("./chargeback/chargeback.route");
 const createTransaction = require("./createTransaction/createTransaction.route");
+const devolution = require("./devolutions/devolution.route");
+
+const mongoose = require('mongoose');
 const config = require("./config.json");
 
 initDatabase();
@@ -35,6 +38,8 @@ function initApp() {
         creditCardCreationRoutes(app);
         createTransaction(app);
         chargebackRoutes(app);
+        app.use("/",devolution);
+     
         return app;
     }catch(error){
         console.log(stLogTitle,error);

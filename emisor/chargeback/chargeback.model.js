@@ -1,20 +1,11 @@
 
-const Transaction = require('../models/transaction.model');
-const CreditCard = require('../models/creditCard.model');
+const ReusableFunctions = require("../utils/reusableFunctions.js");
 
 exports.findTransaction  = async function findTransaction(transactionID){
     var stLogTitle = "findTransaction - Model";
     try{
-        let objRes ={};
-        var transactionFound =  await Transaction.findOne({'_id': transactionID}).catch( err => {        
-            if (err){                            
-                objRes.error = true;
-                objRes.errorDetail = err;
-                return objRes;
-            }                       
-        });       
-        return transactionFound;
-
+        var res =  await ReusableFunctions.findTransaction(transactionID)
+        return res;
     }catch(error){
         console.log(stLogTitle,error);
     }
@@ -23,24 +14,8 @@ exports.findTransaction  = async function findTransaction(transactionID){
 exports.createTransaction  = async function createTransaction(aTransaction){
     var stLogTitle = "createTransaction - Model";
     try{
-        let objRes ={};
-        var newTrans = {};
-        newTrans.amount = parseFloat(aTransaction.amount);
-        newTrans.origin = aTransaction.origin;
-        newTrans.date = aTransaction.date;
-        newTrans.status = aTransaction.status;
-        newTrans.creditCardAcNumber = aTransaction.creditCardAcNumber;
-        newTrans.contrastedTransaction = aTransaction.contrastedTransaction;
-        newTrans.detail = aTransaction.detail;        
-        var newTransaction = new Transaction(newTrans);
-        objRes = await newTransaction.save().catch( err => {        
-            if (err){                           
-                objRes.error = true;
-                objRes.errorDetail = err;
-                return objRes;
-            }                        
-        });
-        return objRes;   
+        var resp = await ReusableFunctions.createTransaction(aTransaction);
+        return resp;    
     }catch(error){
         console.log(stLogTitle,error);
     }
@@ -49,13 +24,8 @@ exports.createTransaction  = async function createTransaction(aTransaction){
 exports.updateTransaction  = async function updateTransaction(aTransaction){
     var stLogTitle = "updateTransaction - Model";
     try{
-        var query = {'_id':aTransaction._id};       
-        var updatedTrans = await Transaction.findOneAndUpdate(query, {"$set":{"status": aTransaction.status, "contrastedTransaction":aTransaction.contrastedTransaction}}, {upsert:false}, function(err, doc){
-            if (err) {
-                console.log("err1: "+ err)
-            }     
-        });
-        return updatedTrans;
+        var res = await ReusableFunctions.updateTransaction(aTransaction);
+        return res;
     }catch(error){
         console.log(stLogTitle,error);
     }
@@ -64,13 +34,7 @@ exports.updateTransaction  = async function updateTransaction(aTransaction){
 exports.updateCC  = async function updateCC(ccAcNum,newCCAmount){
     var stLogTitle = "updateCC - Model";
     try{       
-        var query = {'accountNumberPlusDigit':ccAcNum};        
-         var updatedCC = await CreditCard.findOneAndUpdate(query, {"currentAmount":newCCAmount}, {upsert:false}, function(err, doc){
-            if (err) {
-                console.log("err1: "+ err)
-            }     
-            console.log("savedddd: ");
-        });
+        var updatedCC = await ReusableFunctions.updateCC(ccAcNum,newCCAmount);
         return updatedCC;
     
     }catch(error){
@@ -82,14 +46,7 @@ exports.updateCC  = async function updateCC(ccAcNum,newCCAmount){
 exports.findCreditCard  = async function findCreditCard(accNumHash){
     var stLogTitle = "findCreditCard - Model";
     try{  
-        let objRes ={};  
-        var cc = await CreditCard.findOne({'accountNumberPlusDigit': accNumHash}).catch( err => {        
-            if (err){                            
-                objRes.error = true;
-                objRes.errorDetail = err;
-                return objRes;
-            }                       
-        });      
+        var cc =  await ReusableFunctions.findCreditCard(accNumHash);
         return cc;
     }catch(error){
         console.log(stLogTitle,error);
