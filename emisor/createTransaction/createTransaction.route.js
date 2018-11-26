@@ -4,7 +4,7 @@ const middleware = require("../utils/token.middleware");
 var appRouter =  function (app) {
     var stLogTitle = "appRouter";
     try{
-        app.post("/transaction", async function (req, res) {      
+        app.post("/transaction", middleware.key, async function (req, res) {      
             var objResp = await CreateTransactionController.createTransaction(req.body);   
             console.log("objResp route", objResp);     
             if(objResp.error){

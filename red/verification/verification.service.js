@@ -5,12 +5,14 @@ const  config = require("../config.json");
 const messages = require("../messages.json");
 
 exports.validatePurchase = async function( req ){
-    var number = await crypto.createHash("sha256",req.body.params.number).digest("base64");        
-    var fraud = await this.isFraud(number);
-    if (fraud){
+    var number = await crypto.createHash('sha256').update(req.body.params.number, 'utf8').digest('hex');
+    console.log(number);
+    var fraud = await this.isFraud(number);    
+    if (fraud){        
         return {status:400, message : messages.VERIFICATION.LIMIT_REACHED};   
     } else{
         var emisor = await this.getEmisor(req.body.params.number);
+        console.log(emisor);
         if (emisor) {
             var transaction = new Transaction({ number: number, date: new Date()  });        
             transaction.save();        

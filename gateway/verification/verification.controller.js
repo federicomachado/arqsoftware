@@ -2,14 +2,13 @@ const superagent = require("superagent");
 const GatewayService = require("./verification.service");
 const messages = require("../messages.json");
 const config = require("../config.json");
+const bcrypt = require("bcrypt");
 
 exports.purchase_verify = async function (req,res){    
-    console.log("Received purchase verify");    
-    console.log(req.headers.authorization);
+    console.log("Received purchase verify");        
     if (req.body.params.number && req.body.operation && req.body.params && req.body.made_by){
-        if (req.headers.authorization && req.headers.authorization == config.tepagoya_key){
-            network = await GatewayService.getNetwork(req.body.params.number);             
-            console.log("Network: " + network);
+        if (req.headers.authorization && bcrypt.compareSync(config.tepagoya_key,req.headers.authorization)){
+            network = await GatewayService.getNetwork(req.body.params.number);                         
             if (network) {             
                 res.status(200).json({ provider: network, made_by : req.body.made_by, operation: req.body.operation, params: req.body.params});
             } else{

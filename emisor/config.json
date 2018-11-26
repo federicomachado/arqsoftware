@@ -1,6 +1,7 @@
 {
     "port" : "3004",
     "tepagoya_url" : "localhost:3000/api/consume",
+    "tepagoya_key" : "secret",
     "mongo_url" : "mongodb://federico:secret1@ds161856.mlab.com:61856/emisor",
     "default_date_format" : "DD-MM-YY",
     "default_expires_format" : "MM/YY",

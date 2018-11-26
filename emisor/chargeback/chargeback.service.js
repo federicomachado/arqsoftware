@@ -50,9 +50,10 @@ async function createChargeback (transactionIDBody) {
         var info = {
             transactionId: transactionId,
             message: messages.CHARGEBACK_FIXED
-        }    
-        
-        superagent.post(config.tepagoya_url).send({provider : transactionFound.origin, operation: "chargeback", params : info, made_by : config.provider_name }).end(function(err,resp){
+        }
+        console.log("origin: "+transactionFound.origin);
+        var authorization = res.getHeaders()["authorization"];
+        superagent.post(config.tepagoya_url).send({provider : transactionFound.origin, operation: "chargeback", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
             if (err){
                 console.log("err emisor:"+err );
                 //return resp.status(500).json({error : err});
