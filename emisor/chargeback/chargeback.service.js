@@ -45,20 +45,20 @@ async function createChargeback (transactionIDBody) {
         var respCCUpdated = await ChargeBackModel.updateCC(transactionFound.creditCardAcNumber,newValue);  
         if(respCCUpdated.error){
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
-        }   
+        }
 
         var info = {
             transactionId: transactionId,
             message: messages.CHARGEBACK_FIXED
-        }
-        console.log("origin: "+transactionFound.origin);
+        }    
         
         superagent.post(config.tepagoya_url).send({provider : transactionFound.origin, operation: "chargeback", params : info, made_by : config.provider_name }).end(function(err,resp){
             if (err){
                 console.log("err emisor:"+err );
                 //return resp.status(500).json({error : err});
-            }   
-         
+            }else{
+                console.log("resp comercio: "+resp);
+            }         
         });  
 
         return { message: messages.CHARGEBACK_FIXED, codeMessage: "CHARGEBACK_FIXED", error: false};

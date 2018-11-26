@@ -8,5 +8,14 @@
     },
     "AUTH" :{
         "INVALID_KEY" : "Invalid Key"
-    }
+    },
+    "CHARGEBACK_RECEIVED": "The chargeback reported was received.",
+    "TRANSACTION_ID_REQUIRED": "A transaction id is required",
+    "TRANSACTION_NOT_FOUND": "The transaction does not exist in the system.",
+    "TRANSACTION_WITH_CHARGEBACK" : "Transaction with a charegback done.",
+    "CONEXION_ERROR" : "Connection error",
+    "PURCHASE_ALREADY_RETURNED" : "Purchase was already returned",
+    "PURCHASE_ID_REQUIRED": "A purchase id is required",
+    "DEVOLUTION_DONE": "A devolution was done",
+    "PURCHASE_NOT_FOUND": "The purchase does not exist in the system."
 }

@@ -1,4 +1,4 @@
-const Purchase = require('./purchase.model');
+const Purchase = require('../models/purchase.model');
 const CreditCard = require('../models/creditCard.model');
 const GatewayEntry = require("../gateway/gateway.model");
 const config = require("../config")

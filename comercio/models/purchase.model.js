@@ -25,7 +25,9 @@ let PurchaseSchema = new Schema({
     },
     transaction_code : { type: String },
 
-    status : { type: String }
+    status : { type: String },
+    amountReturned: { type: Number},
+    dateReturned: {type: Date}
 });
 
 module.exports = mongoose.model('Purchase', PurchaseSchema);
