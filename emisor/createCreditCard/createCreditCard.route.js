@@ -2,7 +2,7 @@ const CreditCardCreationController = require('./createCreditCard.controller');
 const middleware = require("../utils/token.middleware");
 
 var appRouter = function (app) {
-    app.post("/creditCard", function (req, res) {   
+    app.post("/creditCard", middleware.key, function (req, res) {   
         //console.log("create credit card");  
         //console.log("body",req.body);  
         var objResp = CreditCardCreationController.createCreditCard(req.body);        
