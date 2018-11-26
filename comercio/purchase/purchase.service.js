@@ -31,11 +31,21 @@ exports.purchase_create = async function(req,res){
                                     return res.status(500).json({error : err});
                                     }            
                                 else{                                
-                                    consumer_purchase.status = "Confirmed";
-                                    consumer_purchase.transaction_code = resp.body.transactionID;
-                                    consumer_purchase.emisor = resp.body.made_by;
-                                    consumer_purchase.save();
-                                    return res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transactionID});
+                                        consumer_purchase.status = "Confirmed";
+                                        consumer_purchase.transaction_code = resp.body.transactionID;
+                                        consumer_purchase.emisor = resp.body.made_by;
+                                        consumer_purchase.save();
+                                        info = {
+                                            status : "Confirmed",
+                                            transactionId : resp.body.transactionID
+                                        }
+                                        superagent.post(config.tepagoya_url).send({provider: selectedGateway.name, operation: "notify", params : info, made_by : config.provider_name}).set("authorization",authorization).end(function(err,resp){
+                                            if (err){
+                                                return res.status(500).json({error : err});
+                                            } else{
+                                                return res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transactionID});
+                                            }
+                                        });                                    
                                     }
                                 });                                                                                                                                    
                         }else{

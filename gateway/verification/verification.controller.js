@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 
 exports.purchase_verify = async function (req,res){    
     console.log("Received purchase verify");        
+    console.log(req.body); 
     if (req.body.params.number && req.body.operation && req.body.params && req.body.made_by){
         if (req.headers.authorization && bcrypt.compareSync(config.tepagoya_key,req.headers.authorization)){
             network = await GatewayService.getNetwork(req.body.params.number);                         

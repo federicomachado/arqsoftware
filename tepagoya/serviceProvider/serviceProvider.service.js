@@ -8,7 +8,8 @@ const Log = require("../logs/"+config.log_service+".service");
 exports.validateRequest = async function ( name, operation, params, made_by ) {
     selectedProvider = await ServiceProvider.findOne({provider : name});
     key = selectedProvider.key;
-    if (!selectedProvider){        
+    if (!selectedProvider){     
+        console.log( "Provider " + name + " does not exist");
         return { message : "Provider " + name + " does not exist", valid: false};
     }
     op = selectedProvider.operations.filter(function (o) {         
@@ -42,8 +43,9 @@ exports.validateRequest = async function ( name, operation, params, made_by ) {
             }                
         }
         
-    }            
-    return { url : selectedProvider.url, operation_url : op.url, params : params, operation : operation, made_by: made_by, valid:true, key : key};
+    }          
+    console.log(selectedProvider);  
+    return { url : selectedProvider.url, operation_url : op.url, params : params, operation : operation, made_by: made_by, valid:true, key : key, provider_name : selectedProvider.provider};
 };
 
 

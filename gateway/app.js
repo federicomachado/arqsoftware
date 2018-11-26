@@ -2,6 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const routes = require("./verification/verification.routes");
+const notifyRoutes = require("./notify/notify.routes");
 const config = require("./config.json");
 
 initDatabase();
@@ -23,5 +24,6 @@ function initApp() {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use("/",routes);
+    app.use("/",notifyRoutes);
     return app;    
 }

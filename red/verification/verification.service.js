@@ -15,7 +15,7 @@ exports.validatePurchase = async function( req ){
         console.log(emisor);
         if (emisor) {
             var transaction = new Transaction({ number: number, date: new Date()  });        
-            transaction.save();        
+            transaction.save();                    
             return { status:200, provider: emisor, operation: req.body.operation, params: req.body.params};            
         } 
         else{

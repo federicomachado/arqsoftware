@@ -4,6 +4,7 @@ const config = require("../config.json");
 var moment = require("moment");
 const superagent = require("superagent");
 const ReusableFunctions = require("../utils/reusableFunctions.js");
+const GatewayEntry = require("../gateway/gateway.model");
 
 async function createDevolution (transactionIDBody,res) {
     var stLogTitle = "createDevolution - Service";
@@ -34,7 +35,7 @@ async function createDevolution (transactionIDBody,res) {
             if (err){               
                 return res.status(500).json({error : err});
             }  else{
-                console.log(resp.body);           
+                // console.log(resp.body);           
                 /*
                 purchaseFound.status = "Returned";
                 purchaseFound.amountRetuned = purchaseFound.amount; 
@@ -44,8 +45,27 @@ async function createDevolution (transactionIDBody,res) {
                     return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};        
                 }     
                 */ 
-
-                return res.status(200).json(resp.body.params);
+               let category = purchaseFound.product.category;
+               GatewayEntry.findOne({category: category}, function(err,selectedGateway){            
+                    if (selectedGateway){             
+                        let name = selectedGateway.name;           
+                        let info = {
+                            status: "Returned",
+                            transactionId : transactionId   
+                        }
+                        console.log("Posting to tepagoya");
+                        superagent.post(config.tepagoya_url).send({provider:name, operation: "notify", params : info  , made_by : config.provider_name}).set("authorization",authorization).end(function(err,resp1){
+                            if (err){
+                                return res.status(500).json({error : err});
+                            } else{
+                                console.log(resp1.body);
+                            }
+                        });                        
+                    } else{
+                        return res.status(500).json({error : err});
+                    }
+                });
+               
             }
             
         });                             
