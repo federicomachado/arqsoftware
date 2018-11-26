@@ -1,9 +1,9 @@
 const Service = require('./createTransaction.service');
 
-async function createTransaction(body){ 
+async function createTransaction(body,res){ 
    var stLogTitle = "createTransaction - Controller";
    try{
-      var respService = await Service.createTransaction(body);
+      var respService = await Service.createTransaction(body,res);
       return respService;
 
    }catch(error){

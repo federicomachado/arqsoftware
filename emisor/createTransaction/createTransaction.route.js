@@ -5,7 +5,7 @@ var appRouter =  function (app) {
     var stLogTitle = "appRouter";
     try{
         app.post("/transaction", middleware.key, async function (req, res) {      
-            var objResp = await CreateTransactionController.createTransaction(req.body);   
+            var objResp = await CreateTransactionController.createTransaction(req.body,res);   
             console.log("objResp route", objResp);     
             if(objResp.error){
                 console.log("err");

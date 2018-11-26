@@ -5,5 +5,7 @@
     "mongo_url" : "mongodb://federico:secret1@ds161856.mlab.com:61856/emisor",
     "default_date_format" : "DD-MM-YY",
     "default_expires_format" : "MM/YY",
-    "provider_name" : "Santander"
+    "provider_name" : "Santander",
+    "provider_password": "secret2",
+    "login_url": "localhost:3000/api/user/login"
 }

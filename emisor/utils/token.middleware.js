@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const superagent = require("superagent");
 const config = require("../config.json");
-const messages = require("../messages.json");
+const messages = require("./messages.json");
 const bcrypt = require("bcrypt");
 
 exports.auth = async function (req,res,next){    

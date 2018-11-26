@@ -4,7 +4,7 @@ const middleware = require("../utils/token.middleware");
 
 var appRouter = function (app) {
     app.post("/chargeback", middleware.auth, middleware.key, async function (req, res) {     
-        var objResp = await ChargebackController.createChargeback(req.body);        
+        var objResp = await ChargebackController.createChargeback(req.body,res);        
         if(objResp.error){
             return res.status(400).send(objResp);
         }else{
@@ -13,5 +13,4 @@ var appRouter = function (app) {
            
     }); 
 }
-
 module.exports = appRouter; 
