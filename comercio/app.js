@@ -3,6 +3,8 @@ var bodyParser = require("body-parser");
 
 var gatewayRoutes = require("./gateway/gateway.route");
 var purchaseRoutes = require("./purchase/purchase.route");
+var chargeBackRoutes = require("./chargeback/chargeback.route");
+var devolutionRoutes = require("./devolution/devolution.route");
 
 var mongoose = require("mongoose");
 
@@ -29,6 +31,8 @@ function initApp() {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use("/",gatewayRoutes);
     app.use("/",purchaseRoutes);
+    app.use("/",chargeBackRoutes);
+    app.use("/",devolutionRoutes);
     return app;
     
 }

@@ -45,7 +45,7 @@ async function createChargeback (transactionIDBody) {
         var respCCUpdated = await ChargeBackModel.updateCC(transactionFound.creditCardAcNumber,newValue);  
         if(respCCUpdated.error){
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
-        }   
+        }
 
         var info = {
             transactionId: transactionId,
@@ -57,8 +57,9 @@ async function createChargeback (transactionIDBody) {
             if (err){
                 console.log("err emisor:"+err );
                 //return resp.status(500).json({error : err});
-            }   
-         
+            }else{
+                console.log("resp comercio: "+resp);
+            }         
         });  
 
         return { message: messages.CHARGEBACK_FIXED, codeMessage: "CHARGEBACK_FIXED", error: false};

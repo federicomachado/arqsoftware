@@ -4,10 +4,21 @@ const config = require("../config.json");
 var luhn = require("luhn");
 const crypto = require("crypto");
 var moment = require("moment");
+const Bin = require('../models/bin.model');
+const CreditCard = require('../models/creditCard.model');
 
-async function createTransaction(ccToValidate) {    
+async function createTransaction(ccToValidate) {
     var stLogTitle = "createTransaction - Service";
     try {
+
+        var num1 =  await getBinNumberHash("4916702131734267");
+        var num2 =  await getAccountNumPlusDigitHash("4916702131734267");
+        var cc = await getSecurityCode("4916702131734267", "01/19");
+        console.log("cc",cc);
+        console.log("num1: "+num1);
+        console.log("num2: "+num2);
+
+
         body = ccToValidate;
         ccToValidate = ccToValidate.params;        
         var accNumHash = await getAccountNumPlusDigitHash(ccToValidate.number);     
