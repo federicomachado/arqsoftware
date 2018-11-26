@@ -29,33 +29,26 @@ async function createDevolution (transactionIDBody,res) {
        // console.log(" resresresresresres resresresresresresres: "+JSON.stringify(res)); 
          
         var authorization = res.getHeaders()["authorization"];
-
-      
-
+        console.log(purchaseFound);
        await superagent.post(config.tepagoya_url).send({provider:purchaseFound.emisor, operation: "devolution", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
-            if (err){
-                console.log("err emisor:"+err );
-                //return resp.status(500).json({error : err});
-            }  
-            console.log("respuesta del emisor: "+JSON.stringify(resp));
-         
-        });     
+            if (err){               
+                return res.status(500).json({error : err});
+            }  else{
+                console.log(resp.body);           
+                /*
+                purchaseFound.status = "Returned";
+                purchaseFound.amountRetuned = purchaseFound.amount; 
+                purchaseFound.dateReturned = await ReusableFunctions.getTodayDate();        
+                var purchaseUpdated = await DevolutionModel.updatePurchase(purchaseFound,transactionId);
+                if(purchaseUpdated.error){
+                    return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};        
+                }     
+                */ 
 
-
-
-        /*
-        purchaseFound.status = "Returned";
-        purchaseFound.amountRetuned = purchaseFound.amount; 
-        purchaseFound.dateReturned = await ReusableFunctions.getTodayDate();        
-        var purchaseUpdated = await DevolutionModel.updatePurchase(purchaseFound,transactionId);
-        if(purchaseUpdated.error){
-            return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};        
-        }     
-        */
-   
-        
-        return { message: messages.DEVOLUTION_DONE, codeMessage: "DEVOLUTION_DONE", error: false};
-
+                return res.status(200).json(resp.body.params);
+            }
+            
+        });                             
     } catch(error){
         console.log(stLogTitle,error);
     }

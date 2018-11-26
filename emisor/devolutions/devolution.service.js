@@ -9,6 +9,7 @@ async function createDevolution (transactionIDBody) {
     var stLogTitle = "createDevolution - Service";
     try { 
         console.log("transactionIDBody: "+JSON.stringify(transactionIDBody));  
+        body = transactionIDBody;
         var transactionId = transactionIDBody.params.transactionId;
             
         if(transactionId == undefined){
@@ -81,9 +82,9 @@ async function createDevolution (transactionIDBody) {
         */       
        var info = {};
        info.transactionId = transactionId;
-       info.message = DEVOLUTION_DONE;       
+       info.message = messages.DEVOLUTION_DONE;       
         
-        return {provider:body.made_by, operation: "devolution", params : info, made_by : config.provider_name };
+        return {provider:body.made_by, operation: "devolution", params : info, made_by : body.made_by };
 
     } catch(error){
         console.log(stLogTitle,error);
