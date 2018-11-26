@@ -168,4 +168,5 @@ function formatnumber(number) {
     format = format.substring(format.length - 3, format.length);
     return format;
 }
+
 module.exports = { createTransaction }; 
