@@ -51,8 +51,11 @@ async function createDevolution (transactionIDBody,res) {
                         let name = selectedGateway.name;           
                         let info = {
                             status: "Returned",
-                            transactionId : transactionId   
+                            transactionId : transactionId,
+                            transaction_date : purchaseFound.transaction_date,
+                            name : purchaseFound.credit_card.name  
                         }
+                        console.log(info);
                         console.log("Posting to tepagoya");
                         superagent.post(config.tepagoya_url).send({provider:name, operation: "notify", params : info  , made_by : config.provider_name}).set("authorization",authorization).end(function(err,resp1){
                             if (err){

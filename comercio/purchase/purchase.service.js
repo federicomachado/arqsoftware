@@ -34,12 +34,14 @@ exports.purchase_create = async function(req,res){
                                         consumer_purchase.status = "Confirmed";
                                         consumer_purchase.transaction_code = resp.body.transactionID;
                                         consumer_purchase.emisor = resp.body.made_by;
-                                        consumer_purchase.save();
+                                        consumer_purchase.save();                                        
                                         info = {
                                             status : "Confirmed",
-                                            transactionId : resp.body.transactionID
+                                            transactionId : resp.body.transactionID,
+                                            transaction_date : info.transaction_date,
+                                            name : req.body.credit_card.name
                                         }
-                                        superagent.post(config.tepagoya_url).send({provider: selectedGateway.name, operation: "notify", params : info, made_by : config.provider_name}).set("authorization",authorization).end(function(err,resp){
+                                        superagent.post(config.tepagoya_url).send({provider: selectedGateway.name, operation: "notify", params : info, made_by : config.provider_name}).set("authorization",authorization).end(function(err,resp1){
                                             if (err){
                                                 return res.status(500).json({error : err});
                                             } else{
