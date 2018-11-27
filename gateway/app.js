@@ -26,5 +26,6 @@ function initApp() {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use("/",routes);
     app.use("/",notifyRoutes);
+    app.use("/",batchRoutes);
     return app;    
 }
