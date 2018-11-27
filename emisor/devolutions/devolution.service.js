@@ -8,7 +8,7 @@ const ReusableFunctions = require("../utils/reusableFunctions.js");
 async function createDevolution (transactionIDBody) {
     var stLogTitle = "createDevolution - Service";
     try { 
-        console.log("transactionIDBody: "+JSON.stringify(transactionIDBody));  
+      
         body = transactionIDBody;
         var transactionId = transactionIDBody.params.transactionId;
             
@@ -70,20 +70,10 @@ async function createDevolution (transactionIDBody) {
         if(respCCUpdated.error){
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
         }        
-
-           /*      
-        superagent.post(config.tepagoya_url).send({provider:purchaseFound.emisor, operation: "devolution", params : info, made_by : config.provider_name }).end(function(err,resp){
-            if (err){
-                console.log("err emisor:"+err );
-                //return resp.status(500).json({error : err});
-            }  
-         
-        });  
-        */       
+  
        var info = {};
        info.transactionId = transactionId;
-       info.message = messages.DEVOLUTION_DONE;       
-        
+       info.message = messages.DEVOLUTION_DONE;               
         return {provider:body.made_by, operation: "devolution", params : info, made_by : body.made_by };
 
     } catch(error){

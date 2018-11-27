@@ -39,7 +39,7 @@ async function createTransaction(purchaseToValidate) {
                     return { message: messages.DATABASE_ERROR, codeMessage: "DATABASE_ERROR", error: true, errorDetail: respCCUpdated.errorDetail }
                 }
             
-                return { message: messages.TRANSACTION_CREATED, codeMessage: "TRANSACTION_CREATED", error: false, transactionID: respModel._id, made_by: body.made_by, provider: body.made_by }
+                return { message: messages.TRANSACTION_CREATED, codeMessage: "TRANSACTION_CREATED", error: false, transactionID: respModel._id, made_by: config.provider_name, provider: config.provider_name }
             }
         } else {
             return { message: messages.CREDITCARD_DONOT_BELONG_EMISOR, codeMessage: "CREDITCARD_DONOT_BELONG_EMISOR", error: true }

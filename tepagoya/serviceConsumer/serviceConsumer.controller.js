@@ -20,8 +20,8 @@ exports.consume = async function (req,res){
                     err => { return_message = err }
                 );                
                 if (resp_1 && resp_1.body){                    
-                    provider_name = resp_1.body.provider;                    
-                    if (resp_1.body.provider == req.body.made_by){                          
+                    provider_name = resp_1.body.provider;                                        
+                    if (resp_1.body.provider == resp_1.body.made_by){                          
                         return res.status(200).json(resp_1.body);                                        
                     }else{
                         provider = await ProviderService.validateRequest(resp_1.body.provider, resp_1.body.operation, resp_1.body.params, resp_1.body.made_by);                                                                           
