@@ -6,7 +6,7 @@ let TransactionSchema = new Schema({
     transaction_origin : { type : String, required:true},    
     transaction_amount: { type: Number, required: true},        
     transaction_detail: { type: String, required: true, max: 100},
-    transaction_date: { type: String,  max: 100},
+    transaction_date: { type: Date},
     transactionId: { type:String},
     status: { type:String}
 });

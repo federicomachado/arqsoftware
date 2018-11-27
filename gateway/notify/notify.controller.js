@@ -10,7 +10,7 @@ exports.update = async function (req,res){
     if (req.body.params.status == "Confirmed" ){
         query = {
             transaction_date : req.body.params.transaction_date,
-            name : req.body.params.name
+            name : req.body.params.name,
         };
         update =  {
             transactionId : req.body.params.transactionId,
@@ -25,7 +25,8 @@ exports.update = async function (req,res){
         }
     }
 
-    let transaction = await Transaction.findOneAndUpdate(query);
+    let transaction = await Transaction.find(query);
+    transaction = transaction[transaction.length-1];
     transaction.status = update.status;
     if (!transaction.transactionId){
         transaction.transactionId = update.transactionId;
