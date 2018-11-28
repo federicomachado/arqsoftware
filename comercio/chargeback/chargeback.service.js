@@ -4,8 +4,9 @@ const config = require("../config.json");
 var moment = require("moment");
 const superagent = require("superagent");
 const ReusableFunctions = require("../utils/reusableFunctions.js");
+const Gateway = require("../gateway/gateway.model");
 
-async function createChargeback (transactionIDBody) {   
+async function createChargeback (transactionIDBody,res) {   
     var stLogTitle = "createChargeback - Service";
     try {        
         var transactionId = transactionIDBody.params.transactionId;
@@ -26,13 +27,31 @@ async function createChargeback (transactionIDBody) {
         if(purchaseUpdated.error){
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};        
         }     
-        var info = {
-            transactionId: transactionId,
-            message: messages.DEVOLUTION_DONE
+                                        
+        info = {
+            status : "Chargeback",
+            transactionId : transactionId,  
+            transaction_date : '',
+            name: ''                      
         }
-        return  {provider : transactionIDBody.made_by, operation: "chargeback", params : info, made_by : config.provider_name };
 
+        let category = purchaseFound.product.category;
+        let gateway = await Gateway.findOne({category:category});
+        var authorization = res.getHeaders()["authorization"];
+        var responseInfo = {
+            transactionId: transactionId,
+            message: messages.DEVOLUTION_DONE,  
+
+        }        
+        await superagent.post(config.tepagoya_url).send({provider: gateway.name, operation: "notify", params : info, made_by : config.provider_name}).set("authorization",authorization).end(function(err,resp1){
+            console.log("Received post callback");
+            if (err){              
+                return res.status(500).json({error : err});
+            }         
+        });  
+        return  {provider : transactionIDBody.made_by, operation: "chargeback", params : responseInfo, made_by : transactionIDBody.made_by };             
     } catch(error){
+        console.log("Entered catch");
         console.log(stLogTitle,error);
     }
 }

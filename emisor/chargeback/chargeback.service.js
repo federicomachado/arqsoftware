@@ -53,14 +53,15 @@ async function createChargeback (transactionIDBody,res) {
             message: messages.CHARGEBACK_FIXED
         }      
         var authorization = res.getHeaders()["authorization"];
-        superagent.post(config.tepagoya_url).send({provider : transactionFound.origin, operation: "chargeback", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
+        await superagent.post(config.tepagoya_url).send({provider : transactionFound.origin, operation: "chargeback", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
             if (err){
                 console.log("err emisor:"+err );
+                console.log(resp.body);
                 return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
-            }         
-        });
-        return { message: messages.CHARGEBACK_FIXED, codeMessage: "CHARGEBACK_FIXED", error: false};        
-
+            }
+        }); 
+        return { message: messages.CHARGEBACK_FIXED, codeMessage: "CHARGEBACK_FIXED", error: false}; 
+        
     } catch(error){
         console.log(stLogTitle,error);
     }
