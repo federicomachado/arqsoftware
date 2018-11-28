@@ -4,6 +4,7 @@
     "tepagoya_key" : "secret",
     "login_url" : "localhost:3000/api/user/login",
     "mongo_url" : "mongodb://fmachado:secret1@ds159993.mlab.com:59993/commerce",
+    "mongo_name" : "commerce",
     "provider_name" : "Comercio1",
     "provider_password" : "secret1",
     "batch_closing_hour" : 23,

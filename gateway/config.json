@@ -3,6 +3,11 @@
  "tepagoya_url" : "localhost:3000/api/consume",
  "tepagoya_key" : "secret",
  "mongo_url": "mongodb://fmachado:secret1@ds035907.mlab.com:35907/gateway_db",
+ "mongo_name" : "gateway_db",
+ "log_dependency" : "@lazerth/log",
+ "log_database" : "mongodb://fmachado:secret1@ds115154.mlab.com:15154/tepagoya_logs",
+ "log_database_name" : "tepagoya_logs",
+ "log_service" : "epochLog",
  "networks_hash" :  { "3" : {
                         "" : "Amex",
                         "6" : { "" : "Diners"},        
