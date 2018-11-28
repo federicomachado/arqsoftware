@@ -5,7 +5,8 @@ const bcrypt = require("bcrypt");
 const Transaction = require("../transaction/transaction.model");
 const moment = require("moment");
 
-exports.update = async function (req,res){        
+exports.update = async function (req,res){    
+    console.log("Entered notify");    
     let query;
     let update;
     req.body.params.transaction_date = moment(req.body.params.transaction_date,"DD-MM-YY HH:mm:ss").format("MM-DD-YY HH:mm:ss");
@@ -28,8 +29,10 @@ exports.update = async function (req,res){
     }
 
     let transaction = await Transaction.find(query);
+    
     transaction = transaction[transaction.length-1];
     transaction.status = update.status;
+    console.log(transaction);
     if (!transaction.transactionId){
         transaction.transactionId = update.transactionId;
     }
