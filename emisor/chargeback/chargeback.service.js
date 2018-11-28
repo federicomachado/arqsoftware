@@ -54,9 +54,7 @@ async function createChargeback (transactionIDBody,res) {
         }      
         var authorization = res.getHeaders()["authorization"];
         await superagent.post(config.tepagoya_url).send({provider : transactionFound.origin, operation: "chargeback", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
-            if (err){
-                console.log("err emisor:"+err );
-                console.log(resp.body);
+            if (err){      
                 return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
             }
         }); 
