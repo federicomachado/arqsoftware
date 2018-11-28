@@ -50,7 +50,8 @@ async function createChargeback (transactionIDBody,res) {
             Log.log("CONEXION_ERROR",{});
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
         }
-        var newValue = parseFloat(ccFound.currentAmount) + parseFloat(newTransaction.amount); //the new transaction amount is negative
+        
+        var newValue = parseFloat(ccFound.currentAmount) + parseFloat(newTransaction.amount); //the new transaction amount is negative        
         var respCCUpdated = await ChargeBackModel.updateCC(transactionFound.creditCardAcNumber,newValue);  
         if(respCCUpdated.error){
             Log.log("CONEXION_ERROR",{});

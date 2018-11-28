@@ -1,7 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 
-const creditCardCreationRoutes = require("./createCreditCard/createCreditCard.route");
 const chargebackRoutes = require("./chargeback/chargeback.route");
 const createTransaction = require("./createTransaction/createTransaction.route");
 const devolution = require("./devolutions/devolution.route");
@@ -37,8 +36,7 @@ function initApp() {
     try{
         var app = express();
         app.use(bodyParser.json());
-        app.use(bodyParser.urlencoded({ extended: true }));
-        creditCardCreationRoutes(app);
+        app.use(bodyParser.urlencoded({ extended: true }));       
         createTransaction(app);
         chargebackRoutes(app);
         app.use("/",devolution);

@@ -72,8 +72,8 @@ exports.createDevolution = async function (transactionIDBody,res) {
             Log.log("CONEXION_ERROR",transactionIDBody);
             return { message: messages.CONEXION_ERROR, codeMessage: "CONEXION_ERROR", error: true};
         }
-      
-        var newValue = parseFloat(ccFound.currentAmount) + parseFloat(newTransaction.amount); 
+        
+        var newValue = parseFloat(ccFound.currentAmount) + parseFloat(newTransaction.amount);         
         var respCCUpdated = await DevolutionModel.updateCC(transactionFound.creditCardAcNumber,newValue);  
         if(respCCUpdated.error){
             Log.log("CONEXION_ERROR",transactionIDBody);
