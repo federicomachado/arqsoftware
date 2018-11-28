@@ -28,7 +28,7 @@ exports.key = async function (req,res,next){
     if (req.headers.authorization && bcrypt.compareSync(config.tepagoya_key,req.headers.authorization)){
         next()
     } else{
-        Log.log(AUTH.INVALID_KEY,req.body);
-        res.status(400).json({error :messages.AUTH.INVALID_KEY})            
+        Log.log(messages.AUTH.INVALID_KEY,req.body);
+        return res.status(400).json({error :messages.AUTH.INVALID_KEY})            
     }
 }

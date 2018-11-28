@@ -6,7 +6,7 @@ const superagent = require("superagent");
 const ReusableFunctions = require("../utils/reusableFunctions.js");
 const Log = require("../logs/"+config.log_service+".service");
 
-async function createDevolution (transactionIDBody,res) {
+exports.createDevolution = async function (transactionIDBody,res) {
     var stLogTitle = "createDevolution - Service";
     try { 
       
@@ -90,6 +90,8 @@ async function createDevolution (transactionIDBody,res) {
         console.log(stLogTitle,error);
     }
 }
+
+
 exports.create_devolution_route = async function(req,res){
     var objResp = await this.create_devolution_cont(req.body,res);        
     if(objResp.error){
@@ -103,7 +105,7 @@ exports.create_devolution_route = async function(req,res){
 exports.create_devolution_cont = async function (req,res){
     var stLogTitle = "createChargeback - Controller";
     try{
-       var respService = await Service.createDevolution(req,res);
+       var respService = await this.createDevolution(req,res);
        return respService;
  
     }catch(error){
@@ -113,4 +115,3 @@ exports.create_devolution_cont = async function (req,res){
     
 }
 
-module.exports = {createDevolution}; 
