@@ -4,6 +4,7 @@ const config = require("../config.json");
 const crypto = require("crypto");
 const CreditCard = require('../models/creditCard.model');
 const Transaction = require('../models/transaction.model.js');
+const Log = require("../logs/"+config.log_service+".service");
 
 
 exports.calculateDaysTransaction  = function calculateDaysTransaction(transactionDate){
@@ -15,6 +16,7 @@ exports.calculateDaysTransaction  = function calculateDaysTransaction(transactio
         var countDays = Math.round(diasdif/(1000*60*60*24));
         return countDays;
     } catch (error) {
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle, error);
     }
 }
@@ -24,6 +26,7 @@ exports.getTodayDate  = async function getTodayDate() {
         var todayDate = new Date();
         return moment(todayDate, config.default_expires_format).toDate();
     } catch (error) {
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle, error);
     }
 }
@@ -45,6 +48,7 @@ exports.getSecurityCode  = async function getSecurityCode(number, expireDate) {
         }
         return formatnumber(parseInt(sum));
     } catch (error) {
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle, error);
     }
 }
@@ -60,6 +64,7 @@ exports.getBinNumberHash  = async function getBinNumberHash(numCC) {
         var binNumHash = await crypto.createHash('sha256').update(numCC, 'utf8').digest('hex');
         return binNumHash;
     } catch (error) {
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle, error);
     }
 }
@@ -70,6 +75,7 @@ exports.getAccountNumPlusDigitHash  = async function getAccountNumPlusDigitHash(
         var binNumHash = await crypto.createHash('sha256').update(numCC, 'utf8').digest('hex');
         return binNumHash;
     } catch (error) {
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle, error);
     }
 }
@@ -87,6 +93,7 @@ exports.findCreditCard  = async function findCreditCard(accNumHash){
         });      
         return cc;
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }   
 };
@@ -97,13 +104,13 @@ exports.updateCC  = async function updateCC(ccAcNum,newCCAmount){
         var query = {'accountNumberPlusDigit':ccAcNum};        
          var updatedCC = await CreditCard.findOneAndUpdate(query, {"currentAmount":newCCAmount}, {upsert:false}, function(err, doc){
             if (err) {
-                console.log("err1: "+ err)
-            }     
-            console.log("savedddd: ");
+                Log.log(stLogTitle,{err});                
+            }                 
         });
         return updatedCC;
     
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }   
 };
@@ -130,6 +137,7 @@ exports.createTransaction  = async function createTransaction(aTransaction){
         });
         return objRes;   
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }   
 };
@@ -145,6 +153,7 @@ exports.updateTransaction  = async function updateTransaction(aTransaction){
         });
         return updatedTrans;
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }
    
@@ -164,6 +173,7 @@ exports.findTransaction  = async function findTransaction(transactionID){
         return transactionFound;
 
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }   
 };

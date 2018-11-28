@@ -8,6 +8,7 @@ const devolution = require("./devolutions/devolution.route");
 
 const mongoose = require('mongoose');
 const config = require("./config.json");
+const Log = require("./logs/"+config.log_service+".service");
 
 initDatabase();
 var app = initApp();
@@ -16,14 +17,16 @@ var server = app.listen(config.port, function () {
 });
 
 function initDatabase()  {
-    var stLogTitle = "initDatabase";
+    
     try{
+        Log.initDatabase(config.mongo_url,config.mongo_name);        
         mongoose.connect(config.mongo_url, { useNewUrlParser:true});
         mongoose.Promise = global.Promise;
         let db = mongoose.connection;
         db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
     }catch(error){
+        Log.log(stLogTitle,error);
         console.log(stLogTitle,error);
     }
  
@@ -42,6 +45,7 @@ function initApp() {
      
         return app;
     }catch(error){
+        Log.log(stLogTitle,error);
         console.log(stLogTitle,error);
     }   
 }

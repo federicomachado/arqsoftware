@@ -1,8 +1,7 @@
 
 const Service = require('./createCreditCard.service');
 
- function createCreditCard(body){
-     
+ function createCreditCard(body){     
     return Service.createCreditCard(body);
  }
 

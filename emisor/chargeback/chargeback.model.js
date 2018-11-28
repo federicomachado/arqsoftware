@@ -1,5 +1,7 @@
 
 const ReusableFunctions = require("../utils/reusableFunctions.js");
+const config = require("../config.json");
+const Log = require("../logs/"+config.log_service+".service");
 
 exports.findTransaction  = async function findTransaction(transactionID){
     var stLogTitle = "findTransaction - Model";
@@ -7,6 +9,7 @@ exports.findTransaction  = async function findTransaction(transactionID){
         var res =  await ReusableFunctions.findTransaction(transactionID)
         return res;
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }
    
@@ -17,6 +20,7 @@ exports.createTransaction  = async function createTransaction(aTransaction){
         var resp = await ReusableFunctions.createTransaction(aTransaction);
         return resp;    
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }
    
@@ -27,6 +31,7 @@ exports.updateTransaction  = async function updateTransaction(aTransaction){
         var res = await ReusableFunctions.updateTransaction(aTransaction);
         return res;
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }
    
@@ -38,6 +43,7 @@ exports.updateCC  = async function updateCC(ccAcNum,newCCAmount){
         return updatedCC;
     
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }
    
@@ -49,6 +55,7 @@ exports.findCreditCard  = async function findCreditCard(accNumHash){
         var cc =  await ReusableFunctions.findCreditCard(accNumHash);
         return cc;
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }   
 };
