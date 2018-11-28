@@ -3,6 +3,7 @@ const config = require("../config.json");
 const Gateway = require("../gateway/gateway.model");
 const moment = require("moment");
 const messages = require("../utils/messages.json");
+const Log = require("../logs/"+config.log_service+".service");
 
 exports.askMovements = async function (req,res) {
     let category = req.body.category;
@@ -20,6 +21,7 @@ exports.askMovements = async function (req,res) {
             .set("authorization",authorization)
             .end(function(err,resp){
                 if (err){
+                    Log.log(err,req.body);
                     return res.status(500).json({message:err});
                 }else{
                     return res.status(200).json(resp.body);
@@ -27,9 +29,11 @@ exports.askMovements = async function (req,res) {
 
             });
         } else{
+            Log.log(messages.CATEGORY_NOT_FOUND,req.body);
             return res.status(400).json({message: messages.CATEGORY_NOT_FOUND });
         }
     }else{
+        Log.log(messages.CATEGORY_NOT_FOUND,req.body);
        return res.status(400).json({message: messages.CATEGORY_NOT_FOUND });
     }
     

@@ -1,15 +1,7 @@
 const Service = require('./devolution.service');
 
-async function createDevolution(body,res){ 
-   var stLogTitle = "createChargeback - Controller";
-   try{
-      var respService = await Service.createDevolution(body,res);
-      return respService;
-
-   }catch(error){
-      console.log(stLogTitle,error);
-   }
-   
+async function createDevolution(body,res){    
+      return await Service.createDevolution(body,res);      
  }
 
  module.exports = {createDevolution};

@@ -1,14 +1,7 @@
 const Service = require('./chargeback.service');
 
 async function createChargeback(body,res){ 
-   var stLogTitle = "createChargeback - Controller";
-   try{
-      var respService = await Service.createChargeback(body,res);
-      return respService;
-   }catch(error){
-      console.log(stLogTitle,error);
-   }
-   
+  return await Service.createChargeback(body,res);
  }
 
  module.exports = {createChargeback};
