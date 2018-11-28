@@ -22,6 +22,8 @@
     "CHARGEBACK_FIXED": "The chargeback reported was fixed.",
     "TRANSACTION_ID_REQUIRED": "A transaction id is required",
     "TRANSACTION_NOT_FOUND": "The transaction does not exist in the system.",
+    "DEVOLUTION_DAY_EXCEEDED": "Devolution cannot be done. Once the purchase is done done the limit of day is: ",
+    "DEVOLUTION_DONE": "The devolution was done correctly",
     "AUTH" : {
         "INVALID_KEY" : "Invalid Key"
     }

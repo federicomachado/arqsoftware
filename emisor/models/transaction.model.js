@@ -6,7 +6,7 @@ let transactionSchema = new Schema({
     creditCardAcNumber: { type: String, required: true, max: 100},
     date : { type: Date, required: true},
     amount : { type: Number, required: true},   
-    status: { type: String, required: true, enum: ['Pending', 'Complete','Error','Canceled','Chargeback']},
+    status: { type: String, required: true, enum: ['Pending', 'Complete','Error','Canceled','Chargeback','Returned']},
     origin: { type: String, required: true, max: 100},
     detail: { type: String, max: 100},
     contrastedTransaction: {type : Schema.Types.ObjectId,

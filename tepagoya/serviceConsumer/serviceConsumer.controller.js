@@ -13,14 +13,15 @@ exports.consume = async function (req,res){
                 return_message = undefined;                                    
                 operation_url = provider.operation_url ? provider.url + "/" + provider.operation_url : provider.url;                
                 console.log("Sending request to: " + operation_url);  
-                console.log(provider.params);                     
+                console.log(provider);                     
+                console.log();
                 let authorization = provider.key
                 let resp_1 = await superagent.post(operation_url).send({ operation : provider.operation, params : provider.params, made_by :  req.body.made_by}).set("authorization",authorization).catch(
                     err => { return_message = err }
                 );                
                 if (resp_1 && resp_1.body){                    
-                    provider_name = resp_1.body.provider;                    
-                    if (resp_1.body.provider == req.body.made_by){                          
+                    provider_name = resp_1.body.provider;                                        
+                    if (resp_1.body.provider == resp_1.body.made_by){                          
                         return res.status(200).json(resp_1.body);                                        
                     }else{
                         provider = await ProviderService.validateRequest(resp_1.body.provider, resp_1.body.operation, resp_1.body.params, resp_1.body.made_by);                                                                           

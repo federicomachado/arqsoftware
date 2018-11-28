@@ -4,14 +4,16 @@ const GatewayEntry = require("../gateway/gateway.model");
 const config = require("../config")
 const superagent = require("superagent");
 const messages = require("../utils/messages.json");
+const moment = require("moment");
 
-exports.purchase_create = async function(req,res){    
-    consumer_purchase = new Purchase(req.body);
+exports.purchase_create = async function(req,res){       
+    consumer_purchase = new Purchase(req.body);    
+    
     consumer_purchase.status = "Pending";
-    consumer_purchase.validate(function(err,ok){
+    consumer_purchase.validate(function(err,ok){        
         if (err){
             return res.status(400).json({error: err.message});
-        }else{
+        }else{    
             credit_card = new CreditCard(req.body.credit_card);
             credit_card.validate(function(err,ok){
                 if (err){
@@ -23,7 +25,7 @@ exports.purchase_create = async function(req,res){
                             info.transaction_amount = req.body.amount;
                             info.transaction_origin = config.provider_name;
                             info.transaction_detail = req.body.product.name;
-                            info.transaction_date = req.body.transaction_date;
+                            info.transaction_date = moment(req.body.transaction_date,"MM-DD-YY HH:mm:ss").format("DD-MM-YY HH:mm:ss");
                             req.body.status = "Sent";                                                                       
                             var authorization = res.getHeaders()["authorization"];
                             superagent.post(config.tepagoya_url).send({provider : selectedGateway.name, operation: "purchase", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
@@ -31,10 +33,23 @@ exports.purchase_create = async function(req,res){
                                     return res.status(500).json({error : err});
                                     }            
                                 else{                                
-                                    consumer_purchase.status = "Confirmed";
-                                    consumer_purchase.transaction_code = resp.body.transactionID;
-                                    consumer_purchase.save();
-                                    return res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transactionID});
+                                        consumer_purchase.status = "Confirmed";
+                                        consumer_purchase.transaction_code = resp.body.transactionID;
+                                        consumer_purchase.emisor = resp.body.made_by;
+                                        consumer_purchase.save();                                        
+                                        info = {
+                                            status : "Confirmed",
+                                            transactionId : resp.body.transactionID,
+                                            transaction_date : info.transaction_date,
+                                            name : req.body.credit_card.name
+                                        }
+                                        superagent.post(config.tepagoya_url).send({provider: selectedGateway.name, operation: "notify", params : info, made_by : config.provider_name}).set("authorization",authorization).end(function(err,resp1){
+                                            if (err){
+                                                return res.status(500).json({error : err});
+                                            } else{
+                                                return res.status(200).json({ purchase_status: "success", message: resp.body.message, transaction_code : resp.body.transactionID});
+                                            }
+                                        });                                    
                                     }
                                 });                                                                                                                                    
                         }else{

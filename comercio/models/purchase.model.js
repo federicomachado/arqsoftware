@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let PurchaseSchema = new Schema({
+    credit_card : {
+        name: {type : String, required: true, max: 100 }
+    },
     shipping_address : {
         street: {type : String, required: true, max: 100 },
         door_number: { type: String, required: true, max:100},
@@ -26,7 +29,8 @@ let PurchaseSchema = new Schema({
     transaction_code : { type: String },
     status : { type: String },
     amountReturned: { type: Number},
-    dateReturned: {type: Date}
+    dateReturned: {type: Date},
+    emisor: {type: String, max: 100}
 });
 
 module.exports = mongoose.model('Purchase', PurchaseSchema);

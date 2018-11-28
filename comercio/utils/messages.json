@@ -17,5 +17,6 @@
     "PURCHASE_ALREADY_RETURNED" : "Purchase was already returned",
     "PURCHASE_ID_REQUIRED": "A purchase id is required",
     "DEVOLUTION_DONE": "A devolution was done",
-    "PURCHASE_NOT_FOUND": "The purchase does not exist in the system."
+    "PURCHASE_NOT_FOUND": "The purchase does not exist in the system.",
+    "CATEGORY_NOT_FOUND" : "Category was not found"
 }
