@@ -37,14 +37,19 @@ exports.purchase_verify = async function (req,res){
                 req.body.params.transaction_date = old_date;
                 res.status(200).json({ provider: network, made_by : req.body.made_by, operation: req.body.operation, params: req.body.params});
             } else{
+                req.body.params = {};
                 Log.log(messages.VERIFICATION.NETWORK_NOT_FOUND,req.body);
                 res.status(500).json({ message: messages.VERIFICATION.NETWORK_NOT_FOUND});
             }
         } else{
+            req.body.params = {};
             Log.log(messages.VERIFICATION.INVALID_KEY,req.body);
             res.status(400).json({ message : messages.VERIFICATION.INVALID_KEY});
         }
     } else{        
+        if (req.body.params){
+            req.body.params = {};
+        }
         Log.log(messages.VERIFICATION.INCOMPLETE_REQUEST,req.body);
         res.status(400).json({ message : messages.VERIFICATION.INCOMPLETE_REQUEST});
     }

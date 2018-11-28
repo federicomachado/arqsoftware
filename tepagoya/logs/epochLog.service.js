@@ -3,10 +3,14 @@ const Log = require(config.log_dependency);
 var moment = require("moment");
 
 exports.log = function(message,rd){
-    console.log(message);
-    if (rd.original_params){
+    if (rd && rd.original_params){
         rd.original_params.number = null;
     }  
+    if (rd && rd.params){
+        rd.params.number = null;
+        rd.params.security_code = null;
+        
+    } 
     Log.create_entry(moment().unix(),message,JSON.stringify(rd));    
 }
 
