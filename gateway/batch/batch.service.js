@@ -31,8 +31,7 @@ exports.getBatches = async function (req,res){
             "$match" : { 
                 "transaction_date" : { "$gt": new Date(lower_range.valueOf()) ,
                                         "$lt" : new Date(upper_range.valueOf())  },
-                "transaction_origin" : { "$eq": params.name  },
-                "status" : { "$eq" : "Confirmed" }
+                "transaction_origin" : { "$eq": params.name  }
             }
         }
     ]);     

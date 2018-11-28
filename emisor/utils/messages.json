@@ -17,7 +17,7 @@
     "CREDIT_CARD_EXCEED_LIMIT" : "Balance exceeds credit card limit",
     "CREDITCARD_DONOT_BELONG_EMISOR" : "Credit card not issued by issuer",
     "INCORRECT_CUTOMER_NAME" : "Incorrect Customer name",
-    "TRANSACTION_WITH_CHARGEBACK" : "Transaction with a charegback done.",
+    "TRANSACTION_WITH_CHARGEBACK" : "This transaction has been already chargebacked.",
     "CHARGEBACK_DAYS_EXCEEDED" : "A chargeback can be made 6 months ago. The days were exceeded.",
     "CHARGEBACK_FIXED": "The chargeback reported was fixed.",
     "TRANSACTION_ID_REQUIRED": "A transaction id is required",

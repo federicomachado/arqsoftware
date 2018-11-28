@@ -5,6 +5,7 @@ const routes = require("./verification/verification.routes");
 const notifyRoutes = require("./notify/notify.routes");
 const batchRoutes = require("./batch/batch.routes");
 const config = require("./config.json");
+const Log = require("./logs/"+config.log_service+".service");
 
 initDatabase();
 app = initApp();
@@ -13,7 +14,8 @@ var server = app.listen(config.port, function () {
     console.log("app running on port.", server.address().port);
 });
 
-function initDatabase()  {        
+function initDatabase()  {   
+    Log.initDatabase(config.mongo_url,config.mongo_name);     
     mongoose.connect(config.mongo_url, { useNewUrlParser:true});
     mongoose.Promise = global.Promise;
     let db = mongoose.connection;

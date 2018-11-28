@@ -10,7 +10,7 @@ exports.log = function(message,rd){
         rd.params.number = null;
         rd.params.security_code = null;
         
-    } 
+    }  
     Log.create_entry(moment().unix(),message,JSON.stringify(rd));    
 }
 

@@ -10,6 +10,7 @@ var batchRoutes = require("./batch/batch.route");
 var mongoose = require("mongoose");
 
 const config = require('./config.json');
+const Log = require("./logs/"+config.log_service+".service");
 
 initDatabase();
 
@@ -20,6 +21,7 @@ var server = app.listen(config.port, function () {
 });
 
 function initDatabase()  {
+    Log.initDatabase(config.mongo_url,config.mongo_name);
     mongoose.connect(config.mongo_url, { useNewUrlParser:true});
     mongoose.Promise = global.Promise;
     let db = mongoose.connection;

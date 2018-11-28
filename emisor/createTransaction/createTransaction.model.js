@@ -1,7 +1,9 @@
 const CreditCard = require('../models/creditCard.model');
 const Bin = require('../models/bin.model');
 const Transaction = require('../models/transaction.model');
-
+const config = require("../config.json");
+const Log = require("../logs/"+config.log_service+".service");
+ 
 exports.findCreditCard  = async function findCreditCard(accNumHash){
     var stLogTitle = "findCreditCard - Model";
     try{  
@@ -17,6 +19,7 @@ exports.findCreditCard  = async function findCreditCard(accNumHash){
         return objRes;
     }catch(error){
         console.log(stLogTitle,error);
+        Log.log(stLogTitle,{error});
     }   
 };
 
@@ -37,6 +40,7 @@ exports.updateCC  = async function updateCC(ccard){
         return objRes;
 
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }
    
@@ -57,6 +61,7 @@ exports.findBin  = async function findBin(ccard){
         return objRes;
 
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }
    
@@ -77,6 +82,7 @@ exports.createTransaction = async function createTransaction(aTransaction){
         return objRes;     
 
     }catch(error){
+        Log.log(stLogTitle,{error});
         console.log(stLogTitle,error);
     }
 

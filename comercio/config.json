@@ -4,7 +4,12 @@
     "tepagoya_key" : "secret",
     "login_url" : "localhost:3000/api/user/login",
     "mongo_url" : "mongodb://fmachado:secret1@ds159993.mlab.com:59993/commerce",
+    "mongo_name" : "commerce",
     "provider_name" : "Comercio1",
     "provider_password" : "secret1",
-    "batch_closing_hour" : 23
+    "batch_closing_hour" : 23,
+    "log_dependency" : "@lazerth/log",
+    "log_database" : "mongodb://fmachado:secret1@ds115154.mlab.com:15154/tepagoya_logs",
+    "log_database_name" : "tepagoya_logs",
+    "log_service" : "epochLog"
 }
