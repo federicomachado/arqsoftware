@@ -3,10 +3,12 @@ const messages = require("../messages.json");
 const config = require("../config.json");
 const bcrypt = require("bcrypt");
 const Transaction = require("../transaction/transaction.model");
+const moment = require("moment");
 
-exports.update = async function (req,res){    
+exports.update = async function (req,res){        
     let query;
     let update;
+    req.body.params.transaction_date = moment(req.body.params.transaction_date,"DD-MM-YY HH:mm:ss").format("MM-DD-YY HH:mm:ss");
     if (req.body.params.status == "Confirmed" ){
         query = {
             transaction_date : req.body.params.transaction_date,

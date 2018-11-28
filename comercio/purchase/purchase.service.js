@@ -4,14 +4,16 @@ const GatewayEntry = require("../gateway/gateway.model");
 const config = require("../config")
 const superagent = require("superagent");
 const messages = require("../utils/messages.json");
+const moment = require("moment");
 
-exports.purchase_create = async function(req,res){    
-    consumer_purchase = new Purchase(req.body);
+exports.purchase_create = async function(req,res){       
+    consumer_purchase = new Purchase(req.body);    
+    
     consumer_purchase.status = "Pending";
-    consumer_purchase.validate(function(err,ok){
+    consumer_purchase.validate(function(err,ok){        
         if (err){
             return res.status(400).json({error: err.message});
-        }else{
+        }else{    
             credit_card = new CreditCard(req.body.credit_card);
             credit_card.validate(function(err,ok){
                 if (err){
@@ -23,7 +25,7 @@ exports.purchase_create = async function(req,res){
                             info.transaction_amount = req.body.amount;
                             info.transaction_origin = config.provider_name;
                             info.transaction_detail = req.body.product.name;
-                            info.transaction_date = req.body.transaction_date;
+                            info.transaction_date = moment(req.body.transaction_date,"MM-DD-YY HH:mm:ss").format("DD-MM-YY HH:mm:ss");
                             req.body.status = "Sent";                                                                       
                             var authorization = res.getHeaders()["authorization"];
                             superagent.post(config.tepagoya_url).send({provider : selectedGateway.name, operation: "purchase", params : info, made_by : config.provider_name }).set("authorization",authorization).end(function(err,resp){
